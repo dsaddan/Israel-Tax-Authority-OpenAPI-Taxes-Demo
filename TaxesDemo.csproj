@@ -124,7 +124,6 @@
     <Compile Include="BL\Tracer.cs" />
     <Compile Include="BL\OpenAPIDocument.cs" />
     <Compile Include="BL\Utils.cs" />
-    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OpenAPIController.cs" />
     <Compile Include="Global.asax.cs">
