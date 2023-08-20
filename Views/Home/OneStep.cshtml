@@ -1,0 +1,38 @@
+﻿@{
+
+    ViewBag.Title = "Home Page";
+}
+
+<div>
+    <h1>OpenAPI Sandbox Invoices Demo</h1>
+</div>
+
+<p>Shaam URL = @TaxesDemo.Controllers.HomeController.shaam_url</p>
+
+<p>For this example to work properly you must perform the following steps:</p>
+
+<p style="font-weight: bold;">1. <a href="/Home/Register">Complete the Registration process and create an App in the "Sandbox".</a></p>
+<p style="font-weight: bold;">2. Fill the key and secret here:</p>
+
+@using (Html.BeginForm("SaveKeyAndSecret2", "Home", FormMethod.Post))
+{
+    <p>Client Key (also called client_id) = @Html.TextBox("key", TaxesDemo.BL.Globals.Get("client_id"), new { style = "width:280px" })</p>
+    <p>Client Secret = @Html.TextBox("secret", TaxesDemo.BL.Globals.Get("client_secret"), new { style = "width:280px" })</p>
+    <p><input id="Submit" type="submit" value="Save" /></p>
+}
+
+
+<p>code = @TaxesDemo.BL.Globals.Get("code")</p>
+
+<p>TokenResponse = @Html.Raw(TaxesDemo.BL.Globals.Get("TokenResponse"))</p>
+<p><span style="font-weight: bold;">Accss Token</span> = @TaxesDemo.BL.Globals.Get("access_token")</p>
+<p><span style="font-weight: bold;">Refresh Token</span> = @TaxesDemo.BL.Globals.Get("access_token")</p>
+
+<p style="font-weight: bold;">3. Get an Invoice number (מספר הקצאה):</p>
+@using (Html.BeginForm("GetInvoiceNumber2", "Home", FormMethod.Post))
+{
+    <p><input id="Submit" type="submit" value="Go" /></p>
+}
+
+<p>Invoice Number Response = @Html.Raw(TaxesDemo.BL.Globals.Get("inumberResponse"))</p>
+<p><span style="font-weight: bold;">Invoice Number</span> = @TaxesDemo.BL.Globals.Get("invoice_number")</p>

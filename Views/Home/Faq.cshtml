@@ -1,0 +1,271 @@
+﻿
+@{
+    ViewBag.Title = "Faq";
+}
+
+<h1>FAQ</h1>
+
+
+<div class="qa">
+    <p class="q">How to start?</p>
+    <p class="a">
+        1. <a href="/Home/Register" target="_blank">Register</a> to the Tax Authority SandBox.<br />
+        2. Create an App in the Sandbox. <br />
+        3. USe this site to test your App.
+    </p>
+</div>
+
+<div class="qa">
+    <p class="q">What is the flow to get an Allocation Number?</p>
+    <p class="a">
+        Get Authorization Code 🡆 Get Access Token 🡆 POST the invoice details and receive an Allocation Number.<br /><br />
+        The Access Token is valid for 10 minutes. So after 10 minutes:<br />
+        Refresh Access Token 🡆 POST the invoice details and receive an Allocation Number.<br /><br />
+        The Refresh Token is valid for 1 month. So after 1 month:<br />
+        Get new Authorization Code 🡆 Get a new Access Code 🡆 POST the invoice details and receive an Allocation Number.<br />
+    </p>
+</div>
+
+<div class="qa">
+    <p class="q">
+        When I try to get an Access Token I receive this error:<br />
+        <code>{"error":"invalid_request","error_description":"Missing authorization code"} </code>
+    </p>
+    <p class="a">
+        You did not send an Authorization Code.<br />
+        For example, the body of the POST request is <div class="c">grant_type=authorization_code&code=&redirect_uri=https%3a%2f%2flocalhost%3a44327%2fOpenAPI</div><br />
+        Get an Authorization Code and try again.
+    </p>
+</div>
+
+<div class="qa">
+    <p class="q">
+        When I try to get an Access Token I receive this error:<br />
+        <code>{"error":"invalid_request","error_description":"Redirect URI specified in the request is not configured in the client subscription"} </code>
+    </p>
+    <p class="a">
+        The App key and App secret are correct but the Redirect URI is incorrect.<br />
+        Note that the Redirect URI is CASE SENSITIVE. Correct the URI here or in the App (in the "Sandbox") and try again.
+    </p>
+</div>
+
+<div class="qa">
+    <p class="q">
+        When I try to get an Access Token I receive the following error:<br />
+        <code>
+            {
+            "error": "invalid_grant",
+            "error_description": "*[6d2e5958492712a68a9a126377ca9ae0] Failed to verify oauth request signature*"
+            }
+        </code>
+    </p>
+    <p class="a">
+        You sent an invalid Authorization Code.
+    </p>
+</div>
+
+<div class="qa">
+    <p class="q">
+        When I try to get an Access Token I receive the following error:<br />
+        <code>{"error":"invalid_grant","error_description":"*[6d2e5958492712a68a9a126377ca9ae0] Authorization code was used before, message rejected*"}</code>
+    </p>
+    <p class="a">
+        The Authorization Code was used to get an Access Token. It can only be used once. Get a new Access Token and try again.
+    </p>
+</div>
+
+<div class="qa">
+    <p class="q">How does an Access Token response look like?</p>
+    <p class="a">
+        A valid token response looks as follows:
+        <div class="c">
+            {"token_type":"Bearer","access_token":"AAIgNmQyZTU5NTg0OTI3MTJhNjhhOWExMjYzNzdjYTlhZTBwejkse8kay4psasYyhLcdChQSqErHZK6ONCFyQj5WiEWrAbx_FEG5xdXQ4qegBA2k-pNXZ6rpQpvCCk5hXZEljyLLxZ0OdHyig2w5BVDkVQ","scope":"scope","expires_in":601,"consented_on":1692529475,"refresh_token":"AAKnqps7fHqrG7GbzZqdgZz4kxPEC1LnUvZ5tPJ6bEBOxa8YnOjBD0uvz8qPvYreMaNjVNB67sAd166eIw2YuqrMQabVFdXNWvD8F_2ctNcKGw","refresh_token_expires_in":2592000}
+        </div>
+    </p>
+</div>
+
+<div class="qa">
+    <p class="q">What is a Refresh Token?</p>
+    <p class="a">
+        The Access Token is valid for only 10 minutes.<br />
+        After 10 minutes you can either get a new Access Token (possibly you will need to login into the Sandbox),<br />
+        or you can get a new Access Token via the Refresh Token:
+        <div class="c">
+            POST /shaam/tsandbox/longtimetoken/oauth2/token
+            Content-Type: application/x-www-form-urlencoded
+            Host: openapi.taxes.gov.il
+            Content-Length: 239
+            Expect: 100-continue
+            Connection: Keep-Alive
+
+            grant_type=refresh_token&client_id=6e2e5955692712a68a9ea22377ca9ae0&client_secret=79b2e2343bba7650e59a202d42ce98aff&refresh_token=AAKnqps2fHqrG7GbzAqdgZz4kxPEC1LnUvZ5tPJ6bEBOxa8YnOjBD0uvz8qPvYreMaNjVNB67sAd166eIw2YuqrMQabVFdXNWvD8F_2ctNcKGw
+        </div>
+    </p>
+</div>
+
+<div class="qa">
+    <p class="q">How does the Invoice JSON look like?</p>
+    <p class="a">
+        Here is an example:<br />
+        <div class="c">
+            {
+            "Invoice_ID":"987654321",
+            "Invoice_Type":320,
+            "Vat_Number":777777715,
+            "Union_Vat_Number":125847553,
+            "Invoice_Reference_Number":"975626515",
+            "Customer_VAT_Number": 18,
+            "Customer_Name":"שם הלקוח",
+            "Invoice_Date":"2023-08-13",
+            "Invoice_Issuance_Date":"2023-08-13",
+            "Branch_ID":"533",
+            "Accounting_Software_Number":36955574,
+            "Client_Software_Key":"76857",
+            "Amount_Before_Discount":543.75,
+            "Discount": 1,
+            "Payment_Amount":4456.23,
+            "VAT_Amount": 129.78,
+            "Payment_Amount_Including_VAT": 585.32,
+            "Invoice_Note":"הערות",
+            "Action":0,
+            "Vehicle_License_Number":584752145,
+            "Phone_Of_Driver":"0505674235",
+            "Arrival_Date":"2023-02-26",
+            "Estimated_Arrival_Time":"13:25",
+            "Transition_Location":12,
+            "Delivery_Address":"כתובת אספקה",
+            "Additional_Information":0,
+            "Items":
+            [
+            {
+            "Index":7446,
+            "Catalog_ID":"5569875437",
+            "Category":15,
+            "Description": "תיאור הפריט",
+            "Measure_Unit_Description":"קילו",
+            "Quantity":100.5,
+            "Price_Per_Unit":5.50,
+            "Discount": 52.75,
+            "Total_Amount": 500.00,
+            "VAT_Rate": 17.00,
+            "VAT_Amount":85
+            }
+            ]
+            }
+        </div>
+
+    </p>
+</div>
+
+<div class="qa">
+    <p class="q">How can I validate the Invoice JSON?</p>
+    <p class="a">
+        You can validate your JSON using <a href="https://www.jsonschemavalidator.net/" target="_blank">https://www.jsonschemavalidator.net/</a>.<br />
+        Here is the <a href="~/Content/invoice_schema.txt" target="_blank">schema file</a>. Download it and copy the schema to the validator.
+    </p>
+</div>
+
+<div class="qa">
+    <p class="q">
+        When I try to get an Allocation Number I get the following error:<br />
+        <code>
+            {
+            "httpCode": "401",
+            "httpMessage": "Unauthorized",
+            "moreInformation": "Cannot pass the security checks that are required by the target API or operation, Enable debug headers for more details."
+            }
+        </code>
+    </p>
+    <p class="a">
+        You sent an invalid token. The token is sent in the request headers:<br />
+        <span class="c">Authorization: Bearer AAIgNmQyZTU5NTg0OTI3MTJhNjhhOWExMjYzNzdjYTlhZTDslQtGLXNTRZw77kL0yeXpUu4c3d7QzX1mt2_vTIEQbyBmeGNyAb1f635ZwC41GLq9XqaIwS7-XLJ7eINW0phDLMUIZ008MC5zGbnr_Oo2CQ</span>
+    </p>
+</div>
+
+<div class="qa">
+    <p class="q">
+        When I try to get an Allocation Number I receive this error:
+        <code>
+            {
+            "Status": 500,
+            "Message": "Internal Server Error",
+            "Error_Id": "71989079303"
+            }
+        </code>
+    </p>
+    <p class="a">
+        You may have used an invalid VAT number.<br />
+        Note that as of today (20-AUG-2023) you can only use the following VAT numbers for the "VAT_NUmber" field:<br />
+        777777715, 777777723, 777777731, 777777749<br />
+    </p>
+</div>
+
+<div class="qa">
+    <p class="q">How does an Allocation Number response look like?</p>
+    <p class="a">
+        A valid Allocation Number response looks like this:<br />
+        <span class="c">
+            {
+            "Status": 200,
+            "Message": "Invoice approved",
+            "Confirmation_number": "20230820112155830232010517"
+            }
+        </span>
+    </p>
+</div>
+
+<div class="qa">
+    <p class="q">How does an Invoice validation error look like?</p>
+    <p class="a">
+
+        You either get a 422 error code. For example, here is a validation error in the "Items"/"Category" field. You will need to find the error using a schema validator:<br />
+        <div class="c red">
+            {
+            "httpCode": "422",
+            "httpMessage": "Unprocessable Entity",
+            "moreInformation": "Validate: temporary:///swagger/shaam_tsandbox_invoices_v1.json:313: [JSV0009] Invalid number: 295656445 should be less than or equal to 999999."
+            }
+        </div>
+
+        or you get a 400 error code with an "errors" field. For example: an error in the "Customer_VAT_Number" field:
+        <div class="c red">
+            {
+            "Status": 200,
+            "Message": [
+            {
+            "errors": [
+            {
+            "code": 432,
+            "message": "Customer VAT Number is incorrect",
+            "param": "Customer_VAT_Number",
+            "location": "validation"
+            }
+            ]
+            }
+            ],
+            "Confirmation_Number": 0
+            }
+        </div>
+    </p>
+</div>
+
+<div class="qa">
+    <p class="q">Where is the manual Invoice NUmber Allocation site?</p>
+    <p class="a">
+        There supposed to be a site where businesses will be able to manually enter an invoice and get an Allocation NUmber.<br />
+        It seems that currently (20-AUG-2023) there is not such a site.
+    </p>
+</div>
+
+<div class="qa">
+    <p class="q">Why do I need to grant access to a corporation in the איזור אישי under הרשאות?</p>
+    <p class="a">
+        I do not know. I suppose that it is a way to allow כספית to allocate numbers for a given user (?).
+    </p>
+</div>
+
+<div class="qa">
+    <p class="q"></p>
+    <p class="a">
+    </p>
+</div>

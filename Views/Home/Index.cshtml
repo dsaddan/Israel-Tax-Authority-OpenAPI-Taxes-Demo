@@ -1,0 +1,145 @@
+﻿@{
+
+    ViewBag.Title = "Home Page";
+}
+
+
+<div>
+    <h1>OpenAPI Sandbox Invoices Demo</h1>
+</div>
+
+<p>Shaam API URL = @TaxesDemo.Controllers.HomeController.shaam_url</p>
+
+<p>For this example to work properly you must perform the following steps:</p>
+
+<p class="bold largeFont">1. <a href="/Home/Register">Complete the Registration process and create an App in the "Sandbox".</a></p>
+<p>Note: you can use an existing app. Either change the Redirect URI to @TaxesDemo.BL.Globals.Get("redirectUrl") or get an Authorization Code idependently and "Set" it in step 3.</p>
+
+<div> --------------------------------------------------------------------------------------------------------------------------------------------------------</div>
+<p class="bold largeFont">2. Set the key and secret here:</p>
+
+@using (Html.BeginForm("SaveKeyAndSecret", "Home", FormMethod.Post))
+{
+    <p>Application Key (also called client_id) = @Html.TextBox("key", TaxesDemo.BL.Globals.Get("client_id"), new { style = "width:280px" })</p>
+    <p>Application Secret (also called client_secret) = @Html.TextBox("secret", TaxesDemo.BL.Globals.Get("client_secret"), new { style = "width:280px" })</p>
+    <p>
+        The redirect uri must be exactly the same (it is case SENSITIVE!) as you registerd in the "Sandbox" App.<br />
+    </p>
+    <p>Redirect uri = @Html.TextBox("redirectUrl", TaxesDemo.BL.Globals.Get("redirectUrl"), new { style = "width:380px" })</p>
+    <p><input id="Submit" type="submit" value="Set Key, Secret and Redirect URI" /></p>
+}
+
+<div> --------------------------------------------------------------------------------------------------------------------------------------------------------</div>
+<p class="bold largeFont">3. Get an Authorization Code:</p>
+@using (Html.BeginForm("GetAuthorization", "Home", FormMethod.Get))
+{
+<p>
+    When you click "Get" you will need to login via the Tax Authority Login page. <br />
+    If no Login Page is displayed then it may be that you are already logged into the Tax Authority domain.<br />
+    If the login is OK and the Key is OK you will get an Authorization Code and it will be displayed below.
+</p>
+    <p><input id="Submit" type="submit" value="Get Authorization Code" /></p>
+
+    <p class="bold">Possible errors:</p>
+    <code>{"error":"unauthorized_client","error_description":"Invalid client ID or secret, or client not subscribed to this API"}</code>
+    <p>
+        1. You entered an incorrect Key or an incorrect Secret.<br />
+        2. Your App (in the Sandbox) is not subscribed to the demoApp. <a href="https://openapi-portal.taxes.gov.il/sandbox" target="_blank">Go there</a> and add a subscription.
+    </p>
+}
+
+<p><span class="bold largeFont">Authorization Code</span> = <span class="bg1">@TaxesDemo.BL.Globals.Get("code")</span></p>
+
+<div class="smallFont">
+    <p class="bold">Or you can set the Authorization Code manually:</p>
+    @using (Html.BeginForm("SaveCode", "Home", FormMethod.Post))
+    {        
+        <p>
+            Code =  @Html.TextBox("code", TaxesDemo.BL.Globals.Get("code"), new { style = "width:900px" })
+        </p>
+
+        <p><input id="Submit" type="submit" value="Set Authorization Code" /></p>
+    }
+</div>
+
+<div> --------------------------------------------------------------------------------------------------------------------------------------------------------</div>
+@using (Html.BeginForm("GetToken", "Home", FormMethod.Get))
+{
+    <p class="bold largeFont">4. Get an Access Token</p>
+
+    <p class="smallFont" style="font-style: italic;">
+        Authorization (used in the Headers of the API call) = <br />
+        @TaxesDemo.BL.Globals.Get("Authorization")
+    </p>
+
+    <p><input id="Submit" type="submit" value="Get Token" /></p>
+}
+
+<p>TokenResponse = </p>
+<div class="box">
+    @Html.Raw(TaxesDemo.BL.Globals.Get("TokenResponse"))
+</div>
+
+@using (Html.BeginForm("RefreshToken", "Home", FormMethod.Post))
+{
+    <span class="bold largeFont">Accss Token</span> <text>=</text> <span class="bg1"> @TaxesDemo.BL.Globals.Get("access_token")</span>
+    <span>Expires at = @TaxesDemo.BL.Globals.Get("access_token_expire_at")</span>
+    <input id="Submit" type="submit" value="⟳" title="Get a new Access Token via the Refresh Token" />
+}
+
+<p><span class="bold largeFont">Refresh Token</span> = <span class="bg1">@TaxesDemo.BL.Globals.Get("refresh_token")</span> <span>Expires at = @TaxesDemo.BL.Globals.Get("refresh_token_expire_at")</span></p>
+<p>Once you received the Token the Authorization Code is invalidated. If you want to test again then you need to get a new Authorization Code. Go back to step 3.</p>
+
+<div> --------------------------------------------------------------------------------------------------------------------------------------------------------</div>
+<p class="bold largeFont">5. Get an Invoice Allocation Number (מספר הקצאה):</p>
+
+<p>The invoice details are hard coded:</p>
+<blockquote class="smallFont">
+    @TaxesDemo.BL.Globals.Get("invoice_details")
+</blockquote>
+
+
+@using (Html.BeginForm("GetInvoiceNumber", "Home", FormMethod.Post))
+{
+    <p><input id="Submit" type="submit" value="Get Invoice Allocation Number" /></p>
+}
+
+<p>Invoice Allocation Number Response = </p>
+<div class="box">
+    @Html.Raw(TaxesDemo.BL.Globals.Get("inumberResponse"))
+</div>
+<p><span class="bold largeFont">Invoice Allocation Number</span> = <span class="bg1">@TaxesDemo.BL.Globals.Get("invoice_number")</span></p>
+
+<div> ----------------------------------------------------------------------------------------------------------------</div>
+
+<div class="smallFont">
+    <p class="bold">How to check your Invoice JSON?</p>
+
+    <p>
+        Note: when you try to get an "Allocation Number" you may receive criptic validation errors such as:<br />
+        <code>Validate: temporary:///swagger/shaam_tsandbox_invoices_v1.json:396: [JSV0008] Invalid number: 0 must be greater than or equal to 1."</code>
+    </p>
+
+    <p>
+        You can validate your JSON using <a href="https://www.jsonschemavalidator.net/" target="_blank">https://www.jsonschemavalidator.net/</a>.<br />
+        Here is the <a href="~/Content/invoice_schema.txt" target="_blank">schema file</a>. Download it and copy the schema to the validator.
+    </p>
+
+</div>
+
+<div> --------------------------------------------------------------------------------------------------------------------------------------------------------</div>
+<p class="bold largeFont">6. Refresh the Access Token</p>
+<p>
+    The Access Token is valid only for 10 minutues. Once it expires you can aquire a new Authorization Code and a new Acces Token.<br />
+    <span class="bold">But if login into איזור אישי  expired you will need to login again. This may affect performance and usability.</span> <br />
+    Alternatively you can aquire a new Access Token via the Refresh Token.
+</p>
+
+@using (Html.BeginForm("RefreshToken", "Home", FormMethod.Post))
+{
+    <p><input id="Submit" type="submit" value="Refresh the Access Token" /></p>
+}
+
+<p>Refresh Token Response = </p>
+<div class="box">@Html.Raw(TaxesDemo.BL.Globals.Get("refreshTokenResponse"))</div>
+
