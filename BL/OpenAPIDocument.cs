@@ -140,7 +140,7 @@ namespace TaxesDemo.BL
         /// <summary>
         /// שורות החשבונית
         /// </summary>
-        public OpenApiItem[] Items { get; set; }
+        public List<OpenApiItem> Items { get; set; }
     }
 
     public class OpenApiItem
@@ -201,9 +201,10 @@ namespace TaxesDemo.BL
         /// שיעור המע"מ: 17.50 עבור 17.5%
         /// </summary>
         public double VAT_Rate { get; set; }
+
         /// <summary>
         ///  סכום המע"מ
         /// </summary>
-        //public double VAT_Amount { get; set; }
+        public double VAT_Amount { get; set; }
     }
 }

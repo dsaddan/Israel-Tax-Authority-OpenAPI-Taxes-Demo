@@ -12,9 +12,10 @@ namespace TaxesDemo.Controllers
 
         [HttpGet, AllowAnonymous]
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Head)]
-        public void Index(string code)
+        public void Index(string code, string state)
         {
 
+            Globals.Set("redirect_state", state);
             Globals.Set("code", code);
 
             Response.Redirect("/");

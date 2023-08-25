@@ -49,19 +49,26 @@ namespace TaxesDemo.Controllers
             return View();
         }
 
-        public void SaveKeyAndSecret(string key, string secret, string redirectUrl)
+        public ActionResult Documentation()
+        {
+            return View();
+        }
+        
+
+        public void SaveKeyAndSecret(string key, string secret, string redirectUrl, string state)
         {
             Globals.Set("client_id", key);
             Globals.Set("client_secret", secret);
             Globals.Set("redirectUrl", redirectUrl);
             Globals.Set("Authorization", "Basic " + Utils.Base64Encode($"{Globals.Get("client_id")}:{Globals.Get("client_secret")}"));
+            Globals.Set("state", state);
             Response.Redirect("/");
         }
 
 
         public void GetAuthorization()
         {
-            string url = ($"{shaam_url}/longtimetoken/oauth2/authorize?response_type=code&client_id={Globals.Get("client_id")}&scope=scope");
+            string url = ($"{shaam_url}/longtimetoken/oauth2/authorize?response_type=code&client_id={Globals.Get("client_id")}&scope=scope&state={Server.UrlEncode( Globals.Get("state") )}");
             Response.Redirect(url);
         }
 
@@ -184,7 +191,7 @@ namespace TaxesDemo.Controllers
             {
                 response = ex.ToString();
 
-                Globals.Set("inumber", null);
+                Globals.Set("invoice_number", null);
                 Globals.Set("inumberResponse", $"<div style='color:red;'>{response.Replace("\r\n", "<br/>")}</div>");
             }
 
@@ -193,7 +200,7 @@ namespace TaxesDemo.Controllers
              
 
 
-        private OpenAPIDocument CreateInvoice()
+        private OpenAPIDocument zzzCreateInvoice()
         {
             return new OpenAPIDocument
             {
@@ -219,7 +226,8 @@ namespace TaxesDemo.Controllers
                 VAT_Amount = 252.13,
                 Payment_Amount_Including_VAT = 1735.22,
 
-                Items = new OpenApiItem[] {
+                Items = new List<OpenApiItem> 
+                {
                     new OpenApiItem { Index  = 1,  Catalog_ID = "אא--72728", Description="דשא דרבן", Measure_Unit_Description="מ\"ר", Price_Per_Unit=22.56, Quantity=60.23, Discount=123.45, Total_Amount=1235.34, /*VAT_Amount=216.18,*/ VAT_Rate=17.00 },
                     new OpenApiItem { Index  = 2,  Catalog_ID = "הובלה 2679", Description="הובלה", Measure_Unit_Description="יח'", Price_Per_Unit=450.00, Quantity=1, Discount=0, Total_Amount=450, /*VAT_Amount=78.75,*/ VAT_Rate=17.00 },
                 },
@@ -227,16 +235,67 @@ namespace TaxesDemo.Controllers
                 Additional_Information = 4365,
                 Invoice_Note = "לתאם הספקה עם אחמד 052-9290009",
             };
-
-
         }
+
+        private OpenAPIDocument CreateInvoice()
+        {
+            var invoice = new OpenAPIDocument
+            {
+                Invoice_ID = "72727890",
+                Invoice_Reference_Number = "015345367",
+                //"מספר תיק מע\"מ (ספק) בשלב זה יש לנסות הקצאת חשבוניות לעוסקים מדומים: 777777715, 777777723, 777777731,777777749"
+                Vat_Number = 777777715,
+                Branch_ID = "716A",
+                Invoice_Date = DateTime.Today.AddDays(-2).ToString("yyyy-MM-dd"),
+                Invoice_Issuance_Date = DateTime.Today.ToString("yyyy-MM-dd"),
+                Invoice_Type = 305,
+                Action = 0,
+
+                //Customer details
+                Customer_Name = "עלי אבוג'דידה",
+                //Use any VAT number but it must be valid (i.e. ספרת ביקורת חייבת להיות נכונה)
+                Customer_VAT_Number = 111111118,
+                Client_Software_Key = "G4255422",
+
+                Accounting_Software_Number = 4324243,
+                Additional_Information = 4365,
+                Invoice_Note = "לתאם הספקה עם אחמד 052-9290009",
+
+                Items = new List<OpenApiItem>()
+            };
+
+            double vatRate = 17.00;
+
+            for (int i = 1; i <= 10; i++)
+            {
+                double pricePerUnit = 2.89 * i;
+                double quantity = 9.526 * i;
+                double discount = 1.654 * i;
+                double total = pricePerUnit * quantity - discount;
+
+                //You must round all sums to 2 digits:
+                var line = new OpenApiItem { Index = i, Catalog_ID = "אא--72728", Description = "דשא דרבן", Measure_Unit_Description = "מ\"ר", Price_Per_Unit = pricePerUnit.Round2(),
+                    Quantity = quantity.Round2(), Discount = discount.Round2(), Total_Amount = total.Round2(), VAT_Amount= (total * vatRate / 100.00).Round2(), VAT_Rate = vatRate  };
+
+                invoice.Items.Add(line);
+            }
+
+            invoice.Amount_Before_Discount = invoice.Items.Sum(e => e.Total_Amount).Round2();
+            invoice.Discount = 202.24;
+            invoice.Payment_Amount = (invoice.Amount_Before_Discount - invoice.Discount).Round2();
+            invoice.VAT_Amount = (invoice.Payment_Amount * vatRate / 100.00).Round2();
+            invoice.Payment_Amount_Including_VAT = (invoice.Payment_Amount + invoice.VAT_Amount).Round2();
+
+            return invoice;
+        }
+
         private string ProcessNumberResponse(string response)
         {
             /*
              {
                 "Status": 200,
                 "Message": "Invoice approved",
-                "Confirmation_number": "20230817135055647229010608"
+                "Confirmation_Number": "20230817135055647229010608"
             }
             */
 
@@ -257,7 +316,7 @@ namespace TaxesDemo.Controllers
 
             if (tr["Status"] == "200" && tr["Message"] == "Invoice approved")
             {
-                string inumber = tr["Confirmation_number"];
+                string inumber = tr["Confirmation_Number"];
                 Globals.Set("invoice_number", inumber);
                 return inumber;
             }

@@ -1,11 +1,12 @@
 ﻿<h1>How to register the Open API Sandbox</h1>
 <p>
     1. Register to the Israel Tax Authority site at <a href="https://openapi-portal.taxes.gov.il/sandbox/" target="_blank">https://openapi-portal.taxes.gov.il/sandbox/</a> ("Sandbox")<br />
-<p><img src="~/Content/images/20230817_105926.png" /><br /><br /></p>
+<p><img class="shadow" src="~/Content/images/20230817_105926.png" /><br /><br /></p>
 <p>
     How to do that?
 <br />
-    You will need to follow the business process described in <a href="https://secapp.taxes.gov.il/OpenApiUserGuide/OpenApiUserGuide.pdf" target="_blank">https://secapp.taxes.gov.il/OpenApiUserGuide/OpenApiUserGuide.pdf</a>
+    You will need to follow the business process described in <a href="https://secapp.taxes.gov.il/OpenApiUserGuide/OpenApiUserGuide.pdf" target="_blank">OpenApiUserGuide.pdf</a> 
+        and <a href="https://www.gov.il/BlobFolder/service/connect-to-shaam/he/Service_Pages_shaam_Software-house-connection-procedure.pdf" target="_blank">נוהל חיבור בית תוכנה</a>.
 <br />
     It involves creating a user account via <a href="https://secapp.taxes.gov.il/srRishum/main/openPage" target="_blank">https://secapp.taxes.gov.il/srRishum/main/openPage</a>
 <br />
@@ -15,39 +16,40 @@
 </p>
 <p>
     2. Then register to the <a href="https://openapi-portal.taxes.gov.il/sandbox">"Sandbox"</a>. Note that the loging to the "Sandbox" is based on<br />
-    the login to איזור אישי <a href="https://secapp.taxes.gov.il/logon/LogonPoint/tmindex.html">https://secapp.taxes.gov.il/logon/LogonPoint/tmindex.html</a> so you MUST have a working account in <br />
-    https://secapp.taxes.gov.il/logon/LogonPoint/tmindex.html <br />
+    the login to "Persoanl Area" ( איזור אישי ) so you MUST have a working account in Perosnal Area.
 </p>
 
 <p>
     3. The registration proccess requires that <br />
-        (1) you create an "organization"" in the "Sandbox" <br />
-        (2)and then sign the registration forms (a contract between you and the Israeli Tax Authority).<br />
-    The process is explained (in Hebrew) <a href="https://www.gov.il/BlobFolder/service/connect-to-shaam/he/Service_Pages_shaam_Software-house-connection-procedure.pdf">here</a>.<br />
+        (1) You create an "Organization" in the "Sandbox"; <br />
+        (2) And then sign the registration forms (a contract between you and the Israeli Tax Authority).<br />
+    The process is explained (in Hebrew) <a href="https://www.gov.il/BlobFolder/service/connect-to-shaam/he/Service_Pages_shaam_Software-house-connection-procedure.pdf" target="_blank">here</a>.<br />
     Once you create an Organization you wil get this screen:<br />
-    <img src="~/Content/images/20230817_110405.png" /> <br /><br />
+    <img class="shadow" src="~/Content/images/20230817_110405.png" /> <br /><br />
 
     You now need to complete, sign and e-mail the contract.<br />
-    The contract and the appendices are found <a href="https://www.gov.il/he/service/connect-to-shaam">here</a> under "לקישור בתי תוכנה:"<br />
+    The contract and the appendices are found <a href="https://www.gov.il/he/service/connect-to-shaam" target="_blank">here</a> under "לקישור בתי תוכנה:"<br />
     Send the contract and appendices to lakohot-bt@taxes.gov.il<br />
-    If they are accepted you will receive an approval e-mail and then you will be able to log into the "Sandbox".
+    If they are accepted you will receive an approval e-mail and then you will be able to log into the "Sandbox". <br />
+    Here is an example for an acceptance mail:<br />
+    <img class="shadow" src="~/Content/images/20230822_113958.png" />
 </p>
 
 <p>
     4. Once you can login to the "Sandbox" go to Apps and create an App.<br />
-    <img src="~/Content/images/20230817_110808.png" />
+    <img class="shadow" src="~/Content/images/20230817_110808.png" />
 </p>
 
 <p>
     Set the redirect URL to <span style="font-size: 120%">@Request.Url.Scheme://@Request.Url.Authority/OpenAPI</span><br />
     The redirect url is used at the Get Authorization Token step (demoed later). <br />
     The redirect url can be localhost since the redirect is done in the client (i.e browser).<br />
-    <img src="~/Content/images/20230817_111357.png" /> <br /><br />
+    <img class="shadow" src="~/Content/images/20230817_111357.png" /> <br /><br />
 </p>
 
 <p>
     After you Save record the Key (note that it is called <span style="font-size: 120%">client_id</span> in the Open Api) and client secret to somewhere safe.<br />
-    <img src="~/Content/images/20230817_111634.png" /> <br /><br />
+    <img class="shadow" src="~/Content/images/20230817_111634.png" /> <br /><br />
 </p>
 
 <p>
@@ -55,30 +57,30 @@
     Go the Apps tab and click on the app you created.<br />
     Ignore the Error 500 under the dashboard tab :-(<br />
     Switch to the Subscriptions tab. <br />
-    <img src="~/Content/images/20230817_112258.png" /> <br /><br />
+    <img class="shadow" src="~/Content/images/20230817_112258.png" /> <br /><br />
 
     Add subscriptions to demoApp "API Product". An API Product is a set of API access points.<br />
     This specific API Produc is the API that will grant you the Access Token to the Invoices API Product.<br />
     This is NOT a "demoApp". It is a very poor name. <br />
-    <img src="~/Content/images/20230817_112435.png" /> <br /><br />
+    <img class="shadow" src="~/Content/images/20230817_112435.png" /> <br /><br />
 
     Click on "Select":<br />
-    <img src="~/Content/images/20230817_112547.png" /> <br /><br />
+    <img class="shadow" src="~/Content/images/20230817_112547.png" /> <br /><br />
 
     Select you app:<br />
-    <img src="~/Content/images/20230817_113726.png" /> <br /><br />
+    <img class="shadow" src="~/Content/images/20230817_113726.png" /> <br /><br />
 
     Click Next:<br />
-    <img src="~/Content/images/20230817_113837.png" /> <br /><br />
+    <img class="shadow" src="~/Content/images/20230817_113837.png" /> <br /><br />
 
     Click Done.<br /><br />
 
     Now subscribe to the Invoices "API Product".<br />
     You may find that there is no "Why not browse the available APIs?" link. In this case subscribe via the API Products Invoices "Get Access" button:<br />
-    <img src="~/Content/images/20230817_114645.png" /> <br /><br />
+    <img class="shadow" src="~/Content/images/20230817_114645.png" /> <br /><br />
 
     Verify the subscriptions by going to Apps, open your app, and look at the Product subscriptions list:<br />
-    <img src="~/Content/images/20230817_114810.png" /> <br /><br />
+    <img class="shadow" src="~/Content/images/20230817_114810.png" /> <br /><br />
 </p>
 
 <p>

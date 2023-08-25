@@ -26,6 +26,7 @@
         The redirect uri must be exactly the same (it is case SENSITIVE!) as you registerd in the "Sandbox" App.<br />
     </p>
     <p>Redirect uri = @Html.TextBox("redirectUrl", TaxesDemo.BL.Globals.Get("redirectUrl"), new { style = "width:380px" })</p>
+    <p>State (e.g. invoice number, client id, etc.) = @Html.TextBox("state", TaxesDemo.BL.Globals.Get("state"))</p>
     <p><input id="Submit" type="submit" value="Set Key, Secret and Redirect URI" /></p>
 }
 
@@ -33,11 +34,11 @@
 <p class="bold largeFont">3. Get an Authorization Code:</p>
 @using (Html.BeginForm("GetAuthorization", "Home", FormMethod.Get))
 {
-<p>
-    When you click "Get" you will need to login via the Tax Authority Login page. <br />
-    If no Login Page is displayed then it may be that you are already logged into the Tax Authority domain.<br />
-    If the login is OK and the Key is OK you will get an Authorization Code and it will be displayed below.
-</p>
+    <p>
+        When you click "Get" you will need to login via the Tax Authority Login page. <br />
+        If no Login Page is displayed then it may be that you are already logged into the Tax Authority domain.<br />
+        If the login is OK and the Key is OK you will get an Authorization Code and it will be displayed below.
+    </p>
     <p><input id="Submit" type="submit" value="Get Authorization Code" /></p>
 
     <p class="bold">Possible errors:</p>
@@ -49,13 +50,14 @@
 }
 
 <p><span class="bold largeFont">Authorization Code</span> = <span class="bg1">@TaxesDemo.BL.Globals.Get("code")</span></p>
+<p><span class="bold largeFont">State (received from Tax Authority)</span> = <span class="bg1">@TaxesDemo.BL.Globals.Get("redirect_state")</span></p>
 
 <div class="smallFont">
     <p class="bold">Or you can set the Authorization Code manually:</p>
     @using (Html.BeginForm("SaveCode", "Home", FormMethod.Post))
-    {        
+    {
         <p>
-            Code =  @Html.TextBox("code", TaxesDemo.BL.Globals.Get("code"), new { style = "width:900px" })
+            Code =  @Html.TextBox("code", TaxesDemo.BL.Globals.Get("code"), new { style = "width:500px;" })
         </p>
 
         <p><input id="Submit" type="submit" value="Set Authorization Code" /></p>
@@ -94,7 +96,7 @@
 <p class="bold largeFont">5. Get an Invoice Allocation Number (מספר הקצאה):</p>
 
 <p>The invoice details are hard coded:</p>
-<blockquote class="smallFont">
+<blockquote class="smallFont" style="max-width: 800px; overflow: scroll;">
     @TaxesDemo.BL.Globals.Get("invoice_details")
 </blockquote>
 

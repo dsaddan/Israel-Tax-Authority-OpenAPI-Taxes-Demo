@@ -3,10 +3,12 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caspit Software OpenAPI demo</title>
+    <title>מודול חשבוניות לישראל - Caspit Software OpenAPI demo</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <meta name="description" content="אתר הדגמה למודול חשבוניות לישראל של רשות המיסים">
 </head>
+
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -23,7 +25,9 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     @*<li>@Html.ActionLink("במהלך אחד", "OneStep", "Home")</li>*@
                     <li>@Html.ActionLink("Registration", "Register", "Home")</li>
+                    <li>@Html.ActionLink("Desktop", "Index", "Desktop")</li>
                     <li>@Html.ActionLink("Faq", "Faq", "Home")</li>
+                    <li>@Html.ActionLink("Documentation", "Documentation", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                 </ul>
             </div>

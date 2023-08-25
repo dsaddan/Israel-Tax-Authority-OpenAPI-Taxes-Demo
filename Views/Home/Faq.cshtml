@@ -5,6 +5,8 @@
 
 <h1>FAQ</h1>
 
+<h2>שאלות נפוצות בעניין מודול חשבוניות לישראל</h2>
+
 
 <div class="qa">
     <p class="q">How to start?</p>
@@ -26,6 +28,32 @@
     </p>
 </div>
 
+
+<div class="qa">
+    <p class="q">
+        When I try to get an Authorization Code I receive this error:<br />
+        <code>{"error":"unauthorized_client","error_description":"Invalid client ID or secret, or client not subscribed to this API"} </code>
+    </p>
+    <p class="a">
+        Either your client id, or secret are incorrect.<br />
+        Or your redirect URI is incorrect. Note that it must match the URI you defined in the App (that you created in the Sandbox) and that it is CASE SENSITIVE.
+    </p>
+</div>
+
+
+<div class="qa">
+    <p class="q">
+        How can I identify the invoice or the client id that requested the Authorization Code?
+    </p>
+    <p class="a">
+        In the GET request add a state parameter. It will be appended to the redirect call.<br />
+        https://openapi.taxes.gov.il/shaam/tsandbox/longtimetoken/oauth2/authorize?response_type=code&client_id=6d2e5958492712a68a9a126377ca9ae1&scope=scope <span class="orange">&state=123456%24%40!%26%5e%25%24</span>
+        <br />
+        ==> <br />
+        https://localhost:44327/OpenAPI?code=847837487389478a66e <span class="orange">&state=123456%24%40!%26%5e%25%24</span>
+    </p>
+</div>
+
 <div class="qa">
     <p class="q">
         When I try to get an Access Token I receive this error:<br />
@@ -33,7 +61,7 @@
     </p>
     <p class="a">
         You did not send an Authorization Code.<br />
-        For example, the body of the POST request is <div class="c">grant_type=authorization_code&code=&redirect_uri=https%3a%2f%2flocalhost%3a44327%2fOpenAPI</div><br />
+        For example, the body of the POST request is <div class="c">grant_type=authorization_code&<span class="red">code=</span>&redirect_uri=https%3a%2f%2flocalhost%3a44327%2fOpenAPI</div><br />
         Get an Authorization Code and try again.
     </p>
 </div>
@@ -208,7 +236,7 @@
             {
             "Status": 200,
             "Message": "Invoice approved",
-            "Confirmation_number": "20230820112155830232010517"
+            "Confirmation_Number": "20230820112155830232010517"
             }
         </span>
     </p>
@@ -249,11 +277,59 @@
     </p>
 </div>
 
+
 <div class="qa">
-    <p class="q">Where is the manual Invoice NUmber Allocation site?</p>
+    <p class="q">Can I get a token using Implicit Grant?</p>
+    <p class="a">
+        Implicit Grant means that you send the following request: <br />.
+        <span class="c">https://openapi.taxes.gov.il/shaam/tsandbox/longtimetoken/oauth2/authorize?response_type=token&client_id=b4fdcbc8307386180bd735305a2027ee&scope=scope</span><br />
+        bypassing the user login stage. You can not do that. You wll get the following error:<br />
+        <code>
+            Response status 400
+            {
+            "error": "unsupported_response_type",
+            "error_description": "Implicit grant not supported"
+            }
+        </code>
+    </p>
+</div>
+
+<div class="qa">
+    <p class="q">Where is the manual Invoice Number Allocation site?</p>
     <p class="a">
         There supposed to be a site where businesses will be able to manually enter an invoice and get an Allocation NUmber.<br />
         It seems that currently (20-AUG-2023) there is not such a site.
+    </p>
+</div>
+
+
+<div class="qa">
+    <p class="q">How can I receive the Authorization Code in desktop applications?</p>
+    <p class="a">
+        You can either:<br />
+        Implement a Web Server in your application. Listen on some port and receive the authorization rediect there.<br />
+        That is, if you listen on port 8888 then the redirect URI will be "http://localhost:8888"<br /><br />
+    </p>
+    <p class="a">
+        Or you can implement a Web site (on a Web server not on the desktop) specifically to receive the Authorization Code and then display it to the user.<br />
+        When there is a need to receive an Allocation Number (and there is no valid Access Token) you will open a Web browser from your desktop application,<br />
+        and display your site.<br />
+        The user will click a link with your App details and the redirect will be into your site.<br />
+        Then the user will copy the Authorization Code into your desktop application. From there you will need to implement the ability to POST<br />
+        requests to the open-api Sandbox in order to receive the Access Token.
+    </p>
+    <p class="a">
+        Note that you will need to implement the POST ability anyway to receive the Allocation Number.
+    </p>
+    <p class="a">
+        See an example here: <a href="https://demo.open-api.co.il/desktop" target="_blank">https://demo.open-api.co.il/desktop</a>
+    </p>
+</div>
+
+
+<div class="qa">
+    <p class="q"></p>
+    <p class="a">
     </p>
 </div>
 
@@ -269,3 +345,6 @@
     <p class="a">
     </p>
 </div>
+
+<p>הקצאת מספרי חשבוניות</p>
+<p>מודול חשבוניות לישראל</p>

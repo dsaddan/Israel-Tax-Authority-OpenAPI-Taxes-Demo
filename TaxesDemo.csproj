@@ -124,6 +124,7 @@
     <Compile Include="BL\Tracer.cs" />
     <Compile Include="BL\OpenAPIDocument.cs" />
     <Compile Include="BL\Utils.cs" />
+    <Compile Include="Controllers\DesktopController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OpenAPIController.cs" />
     <Compile Include="Global.asax.cs">
@@ -148,6 +149,7 @@
     <Content Include="Content\images\20230817_113837.png" />
     <Content Include="Content\images\20230817_114645.png" />
     <Content Include="Content\images\20230817_114810.png" />
+    <Content Include="Content\images\20230822_113958.png" />
     <Content Include="Content\invoice_schema.txt" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -183,6 +185,9 @@
     <Content Include="Views\Home\OneStep.cshtml" />
     <Content Include="Views\Home\Faq.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Documentation.cshtml" />
+    <Content Include="Views\Desktop\Index.cshtml" />
+    <Content Include="Views\Desktop\Callback.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -9,7 +9,7 @@ using System.Web.Script.Serialization;
 
 namespace TaxesDemo.BL
 {
-    public class Utils
+    public static class Utils
     {
         public static string HttpGet(string url)
         {
@@ -142,6 +142,11 @@ namespace TaxesDemo.BL
             DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             dateTime = dateTime.AddSeconds(unixTimeStamp).ToLocalTime();
             return dateTime;
+        }
+
+        public static Double Round2(this double d)
+        {
+            return Math.Floor(d * 100.00) / 100.00;        
         }
     }
 }

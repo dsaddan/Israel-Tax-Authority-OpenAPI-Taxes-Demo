@@ -47,6 +47,15 @@ textarea {
 .red {
     color: red;
 }
+
+.yellow {
+    color: yellow;
+}
+
+.orange {
+    color: orange;
+}
+
 .qa {
     margin-top: 2em;
     background-color: lightcyan;
@@ -64,4 +73,8 @@ textarea {
 .c {
     font-family: 'Times New Roman';
     white-space: pre-wrap;
+}
+
+.shadow {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
