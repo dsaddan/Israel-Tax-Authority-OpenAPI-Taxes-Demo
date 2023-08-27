@@ -31,7 +31,7 @@
 
 @using (Html.BeginForm("SaveKeyAndSecret", "Home", FormMethod.Post))
 {
-    <p>Shaam API URL = @Html.TextBox("shaam_url", TaxesDemo.BL.Globals.Get("shaam_url"), new { style = "width:380px" })</p>
+    <p>* Shaam API URL = @Html.TextBox("shaam_url", TaxesDemo.BL.Globals.Get("shaam_url"), new { style = "width:380px" })</p>
     <p>* Application Key (also called client_id) = @Html.TextBox("key", TaxesDemo.BL.Globals.Get("client_id"), new { style = "width:280px" })</p>
     <p>* Application Secret (also called client_secret) = @Html.TextBox("secret", TaxesDemo.BL.Globals.Get("client_secret"), new { style = "width:280px" })</p>
     <p>
@@ -168,6 +168,7 @@
     <p><input id="Submit" type="submit" value="Refresh the Access Token" /></p>
 }
 
+<a id="6"></a>
 <p>Refresh Token Response = </p>
 <div class="box">@Html.Raw(TaxesDemo.BL.Globals.Get("refreshTokenResponse"))</div>
 

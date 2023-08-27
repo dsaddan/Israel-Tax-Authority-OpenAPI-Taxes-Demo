@@ -149,6 +149,12 @@ namespace TaxesDemo.Controllers
         public void GetToken()
         {
 
+            Globals.Set("access_token", null);
+            Globals.Set("refresh_token", null);
+            Globals.Set("access_token_expire_at", null);
+            Globals.Set("refresh_token_expire_at", null);
+            Globals.Set("TokenResponse", null);
+
             Dictionary<string, string> headers = new Dictionary<string, string>();
             Dictionary<string, string> data = new Dictionary<string, string>();
             string url = $"{Globals.Get("shaam_url")}/longtimetoken/oauth2/token";
@@ -165,14 +171,12 @@ namespace TaxesDemo.Controllers
             {
                 tokenResponse = Utils.HttpPost(url, data, out debug, headers);
                 ProcessTokenResponse(tokenResponse);
-                Globals.Set("TokenResponse", $"{debug}\r\n==>\r\n{tokenResponse}".Replace("\r\n", "<br/>"));
+                Globals.Set("TokenResponse", $"{debug}\r\n🡆\r\n{tokenResponse}".Replace("\r\n", "<br/>"));
             }
             catch (Exception ex)
             {
                 tokenResponse = ex.ToString();
 
-                Globals.Set("access_token", null);
-                Globals.Set("refresh_token", null);
                 Globals.Set("TokenResponse", $"<div style='color:red;'>{tokenResponse.Replace("\r\n", "<br/>")}</div>");
             }
 
@@ -181,6 +185,11 @@ namespace TaxesDemo.Controllers
 
         public void RefreshToken()
         {
+
+            Globals.Set("access_token", null);
+            Globals.Set("access_token_expire_at", null);
+            Globals.Set("refresh_token_expire_at", null);
+            Globals.Set("TokenResponse", null);
 
             Dictionary<string, string> headers = new Dictionary<string, string>();
             Dictionary<string, string> data = new Dictionary<string, string>();
@@ -198,19 +207,16 @@ namespace TaxesDemo.Controllers
                 tokenResponse = Utils.HttpPost(url, data, out debug, headers);
                 ProcessTokenResponse(tokenResponse);
                 Globals.Set("TokenResponse", null);
-                Globals.Set("refreshTokenResponse", $"{debug}\r\n==>\r\n{tokenResponse}".Replace("\r\n", "<br/>"));
+                Globals.Set("refreshTokenResponse", $"{debug}\r\n🡆\r\n{tokenResponse}".Replace("\r\n", "<br/>"));
             }
             catch (Exception ex)
             {
                 tokenResponse = ex.ToString();
 
-                Globals.Set("access_token", null);
-                Globals.Set("refresh_token", null);
-                Globals.Set("TokenResponse", null);
                 Globals.Set("refreshTokenResponse", $"<div style='color:red;'>{tokenResponse.Replace("\r\n", "<br/>")}</div>");
             }
 
-            Response.Redirect("/?#4");
+            Response.Redirect("/?#6");
         }
 
 
@@ -225,10 +231,14 @@ namespace TaxesDemo.Controllers
             "refresh_token_expires_in":2592000}            
             */
 
-            dynamic tr = JObject.Parse(tokenResponse);
 
             Globals.Set("access_token", null);
             Globals.Set("refresh_token", null);
+            Globals.Set("access_token_expire_at", null);
+            Globals.Set("refresh_token_expire_at", null);
+            Globals.Set("TokenResponse", null);
+
+            dynamic tr = JObject.Parse(tokenResponse);
 
             if (tr.token_type == "Bearer")
             {
@@ -254,7 +264,7 @@ namespace TaxesDemo.Controllers
             {
                 response = Utils.HttpPostJson(url, invoice_details, out debug, headers);
                 ProcessNumberResponse(response);
-                Globals.Set("inumberResponse", $"{debug}\r\n==>\r\n{response}".Replace("\r\n", "<br/>"));
+                Globals.Set("inumberResponse", $"{debug}\r\n🡆\r\n{response}".Replace("\r\n", "<br/>"));
                 Response.Redirect("/?#5.2");
             }
             catch (Exception ex)

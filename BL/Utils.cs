@@ -82,7 +82,7 @@ namespace TaxesDemo.BL
                     using (var reader = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding(charSet)))
                     {
                         string s = reader.ReadToEnd();
-                        Tracer.WriteLine($"{debug}\r\n==>\r\n{s}");
+                        Tracer.WriteLine($"{debug}\r\n🡆\r\n{s}");
                         return s;
                     }
                 }
@@ -101,7 +101,7 @@ namespace TaxesDemo.BL
                     rsp = reader.ReadToEnd();
                 }
                 
-                debug = $"\r\nPOST {url}\r\n{hdrs}\r\n{System.Text.Encoding.UTF8.GetString(byteArray)}\r\n==>\r\n{rsp}";
+                debug = $"\r\nPOST {url}\r\n{hdrs}\r\n{System.Text.Encoding.UTF8.GetString(byteArray)}\r\n🡆\r\n{rsp}";
                 Tracer.WriteLine(debug);
                 throw new WebException(debug, ex);
             }
