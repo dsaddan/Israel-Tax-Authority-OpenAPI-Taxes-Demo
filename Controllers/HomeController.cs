@@ -13,8 +13,14 @@ namespace TaxesDemo.Controllers
     {
         private string _shaam_url = "https://openapi.taxes.gov.il/shaam/tsandbox";
 
-        const string client_id = "6d2e5958492712a68a9a126377ca9ae0";
-        const string client_secret = "79b2f283ba87650e59a202d42ce98aff";
+        //The key and secret are only valid if you run the demo under localhost:44327
+        //If you run it under anothe port (say 34567) then you need to create an APP in the Sandbox portal and
+        //set the Redirect URI of said App to https://localhost:34567
+        const string client_id_localhost_44327 = "6d2e5958492712a68a9a126377ca9ae0";
+        const string client_secret_localhost_44327 = "79b2f283ba87650e59a202d42ce98aff";
+
+        const string client_id = "5c49dc2bbf8ef34151fa40b9b8030a5c";
+        const string client_secret = "a3b632650e969a23d6041da689b64b6b";
 
         public HomeController()
         {
@@ -22,14 +28,42 @@ namespace TaxesDemo.Controllers
         public ActionResult Index()
         {
             if (string.IsNullOrEmpty(Globals.Get("shaam_url")))       { Globals.Set("shaam_url", _shaam_url); }
-            if (string.IsNullOrEmpty(Globals.Get("client_id")))       { Globals.Set("client_id", client_id); }
-            if (string.IsNullOrEmpty(Globals.Get("client_secret")))   { Globals.Set("client_secret", client_secret); }
+            if (string.IsNullOrEmpty(Globals.Get("redirectUrl")))     {Globals.Set("redirectUrl", $"{Request.Url.Scheme}://{Request.Url.Authority}/OpenAPI"); }
+            if (string.IsNullOrEmpty(Globals.Get("client_id")))
+            {
+                if (Globals.Get("redirectUrl") == "https://demo.open-api.co.il/OpenAPI")
+                {
+                    Globals.Set("client_id", client_id);
+                }
+                else if (Globals.Get("redirectUrl").ToLower() == "https://localhost:44327/openapi")
+                {
+                    Globals.Set("client_id", client_id_localhost_44327);
+                }
+                else
+                {
+                    Globals.Set("client_id", "== Set your App Key here ==");
+                }
+            }
+            if (string.IsNullOrEmpty(Globals.Get("client_secret")))
+            {
+                if (Globals.Get("redirectUrl") == "https://demo.open-api.co.il/OpenAPI")
+                {
+                    Globals.Set("client_secret", client_secret);
+                }
+                else if (Globals.Get("redirectUrl").ToLower() == "https://localhost:44327/openapi")
+                {
+                    Globals.Set("client_secret", client_secret_localhost_44327);
+                }
+                else
+                {
+                    Globals.Set("client_secret", "== Set your App Secret here ==");
+                }
+            }
             if (string.IsNullOrEmpty(Globals.Get("Authorization")))   { Globals.Set("Authorization", "Basic " + Utils.Base64Encode($"{client_id}:{client_secret}")); }
             if (string.IsNullOrEmpty(Globals.Get("invoice_details"))) {
                 string json = new JavaScriptSerializer().Serialize(CreateInvoice());
                 Globals.Set("invoice_details", json.Replace(",", ",\r\n")); 
             }
-            if (string.IsNullOrEmpty(Globals.Get("redirectUrl")))     {Globals.Set("redirectUrl", $"{Request.Url.Scheme}://{Request.Url.Authority}/OpenAPI"); }
             return View();
         }
 
@@ -68,13 +102,26 @@ namespace TaxesDemo.Controllers
             Globals.Set("Authorization", "Basic " + Utils.Base64Encode($"{Globals.Get("client_id")}:{Globals.Get("client_secret")}"));
             Globals.Set("state", state);
             Globals.Set("SaveKeyAndSecret_response", "Data saved");
+
+            //Reset all other data:
             Globals.Set("GetAuthorization_url", null);
+            Globals.Set("code", null); ;
+            Globals.Set("TokenResponse", null);
+            Globals.Set("access_token", null);
+            Globals.Set("refresh_token", null);
+            Globals.Set("access_token_expire_at", null);
+            Globals.Set("refresh_token_expire_at", null);
+            Globals.Set("invoice_number", null);
+            Globals.Set("inumberResponse", null);
+
             Response.Redirect("/?#1");
         }
 
 
         public void GetAuthorization()
         {
+            Globals.Set("SaveKeyAndSecret_response", null);
+
             string url = ($"{Globals.Get("shaam_url")}/longtimetoken/oauth2/authorize?response_type=code&client_id={Globals.Get("client_id")}&scope=scope&state={Server.UrlEncode( Globals.Get("state") )}");
             Globals.Set("GetAuthorization_url", url);
             Response.Redirect(url);
@@ -83,6 +130,19 @@ namespace TaxesDemo.Controllers
         public void SaveCode(string code)
         {
             Globals.Set("code", code); ;
+            Globals.Set("SaveKeyAndSecret_response", "Data saved");
+
+            //Reset all other data:
+            Globals.Set("GetAuthorization_url", null);
+            Globals.Set("code", null); ;
+            Globals.Set("TokenResponse", null);
+            Globals.Set("access_token", null);
+            Globals.Set("refresh_token", null);
+            Globals.Set("access_token_expire_at", null);
+            Globals.Set("refresh_token_expire_at", null);
+            Globals.Set("invoice_number", null);
+            Globals.Set("inumberResponse", null);
+
             Response.Redirect("/?#3");
         }
 
@@ -178,33 +238,6 @@ namespace TaxesDemo.Controllers
                 Globals.Set("refresh_token_expire_at", Utils.UnixTimeStampToDateTime(tr.consented_on.Value + tr.refresh_token_expires_in.Value).ToString("yyyy-MM-dd HH:mm"));
             }
         }
-
-        //public void GetInvoiceNumber()
-        //{
-        //    Dictionary<string, string> headers = new Dictionary<string, string>();
-        //    OpenAPIDocument data = CreateInvoice();
-        //    string url = $"{Globals.Get("shaam_url")}/Invoices/v1/Approval";
-
-        //    headers.Add("Authorization", $"Bearer {Globals.Get("access_token")}");
-
-        //    string response = null;
-        //    string debug = null;
-        //    try
-        //    {
-        //        response = Utils.HttpPostJson(url, data, out debug, headers);
-        //        ProcessNumberResponse(response);
-        //        Globals.Set("inumberResponse", $"{debug}\r\n{response}".Replace("\r\n", "<br/>"));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        response = ex.ToString();
-
-        //        Globals.Set("invoice_number", null);
-        //        Globals.Set("inumberResponse", $"<div style='color:red;'>{response.Replace("\r\n", "<br/>")}</div>");
-        //    }
-
-        //    Response.Redirect("/?#5.1");
-        //}
 
         public void GetInvoiceNumber(string invoice_details)
         {
@@ -365,23 +398,6 @@ namespace TaxesDemo.Controllers
             }
 
             throw new Exception(response);
-        }
-
-
-        /********************************************************************************************************/
-
-        public void SaveKeyAndSecret2(string key, string secret, string redirectUrl)
-        {
-            Globals.Set("client_id", key);
-            Globals.Set("client_secret", secret);
-            Globals.Set("redirectUrl", redirectUrl);
-            Globals.Set("Authorization", "Basic " + Utils.Base64Encode($"{client_id}:{client_secret}"));
-            Response.Redirect("/Home/OneStep");
-        }
-        public void GetInvoiceNumber2()
-        {
-            GetAuthorization();
-            GetToken();
         }
     }
 }

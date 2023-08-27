@@ -5,7 +5,8 @@
 
 
 <div>
-    <h1>OpenAPI Sandbox Invoices Demo</h1>
+    <h1>דמו למודול הקצאת מספרי חשבוניות על-ידי רשות המיסים</h1>
+    <h2>OpenAPI Sandbox Invoices Demo</h2>
 </div>
 
 
@@ -21,8 +22,8 @@
 <p>
     Available keys and secrets:
     <table class="borders">
-        <tr><th>Env</th><th>Key</th><th>Secret</th><th>Redirect URI</th><th>Shaaam URL</th></tr>
-        <tr><td>Sandbox</td><td>6d2e5958492712a68a9a126377ca9ae0</td><td>79b2f283ba87650e59a202d42ce98aff</td><td>https://localhost:44327/openAPI</td><td>https://openapi.taxes.gov.il/shaam/tsandbox</td></tr>
+        <tr><th>Env סביבה</th><th>Key מפתח</th><th>Secret סוד</th><th>Redirect URI</th><th>Shaaam URL פורטל</th></tr>
+        <tr><td>Sandbox localhost:44327</td><td>6d2e5958492712a68a9a126377ca9ae0</td><td>79b2f283ba87650e59a202d42ce98aff</td><td>https://localhost:44327/openAPI</td><td>https://openapi.taxes.gov.il/shaam/tsandbox</td></tr>
         <tr><td>Sandbox</td><td>5c49dc2bbf8ef34151fa40b9b8030a5c</td><td>a3b632650e969a23d6041da689b64b6b</td><td>https://demo.open-api.co.il/OpenAPI</td><td>https://openapi.taxes.gov.il/shaam/tsandbox</td></tr>
         <tr><td>Production</td><td>==Use your own key==</td><td>==Use your own secret==</td><td>https://demo.open-api.co.il/OpenAPI</td><td>https://openapi.taxes.gov.il/shaam/production</td></tr>
     </table>
@@ -31,16 +32,16 @@
 @using (Html.BeginForm("SaveKeyAndSecret", "Home", FormMethod.Post))
 {
     <p>Shaam API URL = @Html.TextBox("shaam_url", TaxesDemo.BL.Globals.Get("shaam_url"), new { style = "width:380px" })</p>
-    <p>Application Key (also called client_id) = @Html.TextBox("key", TaxesDemo.BL.Globals.Get("client_id"), new { style = "width:280px" })</p>
-    <p>Application Secret (also called client_secret) = @Html.TextBox("secret", TaxesDemo.BL.Globals.Get("client_secret"), new { style = "width:280px" })</p>
+    <p>* Application Key (also called client_id) = @Html.TextBox("key", TaxesDemo.BL.Globals.Get("client_id"), new { style = "width:280px" })</p>
+    <p>* Application Secret (also called client_secret) = @Html.TextBox("secret", TaxesDemo.BL.Globals.Get("client_secret"), new { style = "width:280px" })</p>
     <p>
         The redirect uri must be exactly the same (it is case SENSITIVE!) as you registerd in the "Sandbox" App.<br />
     </p>
-    <p>Redirect uri = @Html.TextBox("redirectUrl", TaxesDemo.BL.Globals.Get("redirectUrl"), new { style = "width:380px" })</p>
-    <p>State (e.g. invoice number, client id, etc.) = @Html.TextBox("state", TaxesDemo.BL.Globals.Get("state"))</p>
-    <p><input id="Submit" type="submit" value="Set Key, Secret and Redirect URI" /></p>
-    <p class="bg1">@TaxesDemo.BL.Globals.Get("SaveKeyAndSecret_response")</p>
+    <p>* Redirect uri = @Html.TextBox("redirectUrl", TaxesDemo.BL.Globals.Get("redirectUrl"), new { style = "width:380px" })</p>
+    <p>Optional State (e.g. invoice number, client id, etc.) = @Html.TextBox("state", TaxesDemo.BL.Globals.Get("state"))</p>
+    <p><input id="Submit" type="submit" class="bold largeFont" value="Set Key, Secret and Redirect URI שמירה" /></p>
 }
+<p class="bg1">@TaxesDemo.BL.Globals.Get("SaveKeyAndSecret_response")</p>
 
 <div> --------------------------------------------------------------------------------------------------------------------------------------------------------</div>
 <a id="3"></a>
@@ -52,7 +53,7 @@
         If no Login Page is displayed then it may be that you are already logged into the Tax Authority domain.<br />
         If the login is OK and the Key is OK you will get an Authorization Code and it will be displayed below.
     </p>
-    <p><input id="Submit" type="submit" value="Get Authorization Code" /></p>
+    <p><input id="Submit" type="submit" class="bold largeFont" value="Get Authorization Code קבל קוד הרשאה" /></p>
 
     <p class="bold">Possible errors:</p>
     <code>{"error":"unauthorized_client","error_description":"Invalid client ID or secret, or client not subscribed to this API"}</code>
@@ -67,14 +68,14 @@
 <p><span class="bold largeFont">State (received from Tax Authority)</span> = <span class="bg1">@TaxesDemo.BL.Globals.Get("redirect_state")</span></p>
 
 <div class="smallFont">
-    <p class="bold">Or you can set the Authorization Code manually:</p>
+    <p class="bold">Or if you have your own App in the Sandbox, then use it to get the Authorization Code and set it manually:</p>
     @using (Html.BeginForm("SaveCode", "Home", FormMethod.Post))
     {
         <p>
             Code =  @Html.TextBox("code", TaxesDemo.BL.Globals.Get("code"), new { style = "width:500px;" })
         </p>
 
-        <p><input id="Submit" type="submit" value="Set Authorization Code" /></p>
+        <p><input id="Submit" type="submit" value="Set Authorization Code קבע קוד הרשאה" /></p>
     }
 </div>
 
@@ -89,7 +90,7 @@
         @TaxesDemo.BL.Globals.Get("Authorization")
     </p>
 
-    <p><input id="Submit" type="submit" value="Get Token" /></p>
+    <p><input id="Submit" type="submit" class="bold largeFont" value="Get Access Token קבל אסימון גישה" /></p>
 }
 
 <p>TokenResponse = </p>
@@ -110,22 +111,28 @@
 <div> --------------------------------------------------------------------------------------------------------------------------------------------------------</div>
 <a id="5"></a>
 <p class="bold largeFont">5. Get an Invoice Allocation Number (מספר הקצאה):</p>
+
+@using (Html.BeginForm("ResetInvoice", "Home", FormMethod.Post))
+{
+    <span>You can edit the Invoice details to test the JSON:</span>
+    <input id="Submit" type="submit" class="smallFont" value="Reset Invoice אתחל את פרטי החשבונית" />
+    <br />
+    <br />
+}
+
+
 @using (Html.BeginForm("GetInvoiceNumber", "Home", FormMethod.Post))
 {
-    <p>You can edit the Invoice details to test the JSON:</p>
     @Html.TextArea("invoice_details", TaxesDemo.BL.Globals.Get("invoice_details"), new { style = "width:800px; height: 500px;" })
 
 
-    <p><input id="Submit" type="submit" value="Get Invoice Allocation Number" /></p>
+    <p><input id="Submit" type="submit" class="bold largeFont" value="Get Invoice Allocation Number קבל מספר הקצאה" /></p>
 }
-@using (Html.BeginForm("ResetInvoice", "Home", FormMethod.Post))
-{
-    <p><input id="Submit" type="submit" value="Reset Invoice" /></p>
-}
+
 
 <a id="5.1"></a>
 <p>Invoice Allocation Number Response = </p>
-<div class="box">
+<div class="box" style="max-height: 300px; overflow:scroll;">
     @Html.Raw(TaxesDemo.BL.Globals.Get("inumberResponse"))
 </div>
 <a id="5.2"></a>
