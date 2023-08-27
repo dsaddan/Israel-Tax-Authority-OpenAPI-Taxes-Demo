@@ -11,20 +11,24 @@ namespace TaxesDemo.Controllers
 {
     public class HomeController : Controller
     {
-        public const string shaam_url = "https://openapi.taxes.gov.il/shaam/tsandbox";
+        private string _shaam_url = "https://openapi.taxes.gov.il/shaam/tsandbox";
 
-        const string client_id = "== Fill the App Key here ==";
-        const string client_secret = "== Fill the App Secret here ==";
+        const string client_id = "6d2e5958492712a68a9a126377ca9ae0";
+        const string client_secret = "79b2f283ba87650e59a202d42ce98aff";
 
         public HomeController()
         {
         }
         public ActionResult Index()
         {
+            if (string.IsNullOrEmpty(Globals.Get("shaam_url")))       { Globals.Set("shaam_url", _shaam_url); }
             if (string.IsNullOrEmpty(Globals.Get("client_id")))       { Globals.Set("client_id", client_id); }
             if (string.IsNullOrEmpty(Globals.Get("client_secret")))   { Globals.Set("client_secret", client_secret); }
             if (string.IsNullOrEmpty(Globals.Get("Authorization")))   { Globals.Set("Authorization", "Basic " + Utils.Base64Encode($"{client_id}:{client_secret}")); }
-            if (string.IsNullOrEmpty(Globals.Get("invoice_details"))) { Globals.Set("invoice_details", new JavaScriptSerializer().Serialize(CreateInvoice())); }
+            if (string.IsNullOrEmpty(Globals.Get("invoice_details"))) {
+                string json = new JavaScriptSerializer().Serialize(CreateInvoice());
+                Globals.Set("invoice_details", json.Replace(",", ",\r\n")); 
+            }
             if (string.IsNullOrEmpty(Globals.Get("redirectUrl")))     {Globals.Set("redirectUrl", $"{Request.Url.Scheme}://{Request.Url.Authority}/OpenAPI"); }
             return View();
         }
@@ -55,27 +59,31 @@ namespace TaxesDemo.Controllers
         }
         
 
-        public void SaveKeyAndSecret(string key, string secret, string redirectUrl, string state)
+        public void SaveKeyAndSecret(string shaam_url, string key, string secret, string redirectUrl, string state)
         {
+            Globals.Set("shaam_url", shaam_url);
             Globals.Set("client_id", key);
             Globals.Set("client_secret", secret);
             Globals.Set("redirectUrl", redirectUrl);
             Globals.Set("Authorization", "Basic " + Utils.Base64Encode($"{Globals.Get("client_id")}:{Globals.Get("client_secret")}"));
             Globals.Set("state", state);
-            Response.Redirect("/");
+            Globals.Set("SaveKeyAndSecret_response", "Data saved");
+            Globals.Set("GetAuthorization_url", null);
+            Response.Redirect("/?#1");
         }
 
 
         public void GetAuthorization()
         {
-            string url = ($"{shaam_url}/longtimetoken/oauth2/authorize?response_type=code&client_id={Globals.Get("client_id")}&scope=scope&state={Server.UrlEncode( Globals.Get("state") )}");
+            string url = ($"{Globals.Get("shaam_url")}/longtimetoken/oauth2/authorize?response_type=code&client_id={Globals.Get("client_id")}&scope=scope&state={Server.UrlEncode( Globals.Get("state") )}");
+            Globals.Set("GetAuthorization_url", url);
             Response.Redirect(url);
         }
 
         public void SaveCode(string code)
         {
             Globals.Set("code", code); ;
-            Response.Redirect("/");
+            Response.Redirect("/?#3");
         }
 
         public void GetToken()
@@ -83,7 +91,7 @@ namespace TaxesDemo.Controllers
 
             Dictionary<string, string> headers = new Dictionary<string, string>();
             Dictionary<string, string> data = new Dictionary<string, string>();
-            string url = $"{shaam_url}/longtimetoken/oauth2/token";
+            string url = $"{Globals.Get("shaam_url")}/longtimetoken/oauth2/token";
 
             headers.Add("Authorization", Globals.Get("Authorization"));
 
@@ -97,7 +105,7 @@ namespace TaxesDemo.Controllers
             {
                 tokenResponse = Utils.HttpPost(url, data, out debug, headers);
                 ProcessTokenResponse(tokenResponse);
-                Globals.Set("TokenResponse", $"{debug}\r\n{tokenResponse}".Replace("\r\n", "<br/>"));
+                Globals.Set("TokenResponse", $"{debug}\r\n==>\r\n{tokenResponse}".Replace("\r\n", "<br/>"));
             }
             catch (Exception ex)
             {
@@ -108,7 +116,7 @@ namespace TaxesDemo.Controllers
                 Globals.Set("TokenResponse", $"<div style='color:red;'>{tokenResponse.Replace("\r\n", "<br/>")}</div>");
             }
 
-            Response.Redirect("/");
+            Response.Redirect("/?#4");
         }
 
         public void RefreshToken()
@@ -116,7 +124,7 @@ namespace TaxesDemo.Controllers
 
             Dictionary<string, string> headers = new Dictionary<string, string>();
             Dictionary<string, string> data = new Dictionary<string, string>();
-            string url = $"{shaam_url}/longtimetoken/oauth2/token";
+            string url = $"{Globals.Get("shaam_url")}/longtimetoken/oauth2/token";
 
             data.Add("grant_type", "refresh_token");
             data.Add("client_id", Globals.Get("client_id"));
@@ -130,7 +138,7 @@ namespace TaxesDemo.Controllers
                 tokenResponse = Utils.HttpPost(url, data, out debug, headers);
                 ProcessTokenResponse(tokenResponse);
                 Globals.Set("TokenResponse", null);
-                Globals.Set("refreshTokenResponse", $"{debug}\r\n{tokenResponse}".Replace("\r\n", "<br/>"));
+                Globals.Set("refreshTokenResponse", $"{debug}\r\n==>\r\n{tokenResponse}".Replace("\r\n", "<br/>"));
             }
             catch (Exception ex)
             {
@@ -142,7 +150,7 @@ namespace TaxesDemo.Controllers
                 Globals.Set("refreshTokenResponse", $"<div style='color:red;'>{tokenResponse.Replace("\r\n", "<br/>")}</div>");
             }
 
-            Response.Redirect("/");
+            Response.Redirect("/?#4");
         }
 
 
@@ -171,11 +179,39 @@ namespace TaxesDemo.Controllers
             }
         }
 
-        public void GetInvoiceNumber()
+        //public void GetInvoiceNumber()
+        //{
+        //    Dictionary<string, string> headers = new Dictionary<string, string>();
+        //    OpenAPIDocument data = CreateInvoice();
+        //    string url = $"{Globals.Get("shaam_url")}/Invoices/v1/Approval";
+
+        //    headers.Add("Authorization", $"Bearer {Globals.Get("access_token")}");
+
+        //    string response = null;
+        //    string debug = null;
+        //    try
+        //    {
+        //        response = Utils.HttpPostJson(url, data, out debug, headers);
+        //        ProcessNumberResponse(response);
+        //        Globals.Set("inumberResponse", $"{debug}\r\n{response}".Replace("\r\n", "<br/>"));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        response = ex.ToString();
+
+        //        Globals.Set("invoice_number", null);
+        //        Globals.Set("inumberResponse", $"<div style='color:red;'>{response.Replace("\r\n", "<br/>")}</div>");
+        //    }
+
+        //    Response.Redirect("/?#5.1");
+        //}
+
+        public void GetInvoiceNumber(string invoice_details)
         {
+            Globals.Set("invoice_details", invoice_details);
+
             Dictionary<string, string> headers = new Dictionary<string, string>();
-            OpenAPIDocument data = CreateInvoice();
-            string url = $"{shaam_url}/Invoices/v1/Approval";
+            string url = $"{Globals.Get("shaam_url")}/Invoices/v1/Approval";
 
             headers.Add("Authorization", $"Bearer {Globals.Get("access_token")}");
 
@@ -183,9 +219,10 @@ namespace TaxesDemo.Controllers
             string debug = null;
             try
             {
-                response = Utils.HttpPostJson(url, data, out debug, headers);
+                response = Utils.HttpPostJson(url, invoice_details, out debug, headers);
                 ProcessNumberResponse(response);
-                Globals.Set("inumberResponse", $"{debug}\r\n{response}".Replace("\r\n", "<br/>"));
+                Globals.Set("inumberResponse", $"{debug}\r\n==>\r\n{response}".Replace("\r\n", "<br/>"));
+                Response.Redirect("/?#5.2");
             }
             catch (Exception ex)
             {
@@ -193,11 +230,17 @@ namespace TaxesDemo.Controllers
 
                 Globals.Set("invoice_number", null);
                 Globals.Set("inumberResponse", $"<div style='color:red;'>{response.Replace("\r\n", "<br/>")}</div>");
+                Response.Redirect("/?#5.1");
             }
-
-            Response.Redirect("/");
         }
-             
+
+        public void ResetInvoice()
+        {
+            Globals.Set("invoice_details", null);
+            Globals.Set("inumberResponse", null);
+
+            Response.Redirect("/?#5");
+        }
 
 
         private OpenAPIDocument zzzCreateInvoice()
@@ -257,7 +300,7 @@ namespace TaxesDemo.Controllers
                 Customer_VAT_Number = 111111118,
                 Client_Software_Key = "G4255422",
 
-                Accounting_Software_Number = 4324243,
+                Accounting_Software_Number = 207703,
                 Additional_Information = 4365,
                 Invoice_Note = "לתאם הספקה עם אחמד 052-9290009",
 
@@ -274,16 +317,16 @@ namespace TaxesDemo.Controllers
                 double total = pricePerUnit * quantity - discount;
 
                 //You must round all sums to 2 digits:
-                var line = new OpenApiItem { Index = i, Catalog_ID = "אא--72728", Description = "דשא דרבן", Measure_Unit_Description = "מ\"ר", Price_Per_Unit = pricePerUnit.Round2(),
+                var line = new OpenApiItem { Index = i, Catalog_ID = $"אא--{i+72728}", Description = "דשא דרבן", Measure_Unit_Description = "מ\"ר", Price_Per_Unit = pricePerUnit.Round2(),
                     Quantity = quantity.Round2(), Discount = discount.Round2(), Total_Amount = total.Round2(), VAT_Amount= (total * vatRate / 100.00).Round2(), VAT_Rate = vatRate  };
 
                 invoice.Items.Add(line);
             }
 
-            invoice.Amount_Before_Discount = invoice.Items.Sum(e => e.Total_Amount).Round2();
-            invoice.Discount = 202.24;
-            invoice.Payment_Amount = (invoice.Amount_Before_Discount - invoice.Discount).Round2();
-            invoice.VAT_Amount = (invoice.Payment_Amount * vatRate / 100.00).Round2();
+            invoice.Amount_Before_Discount       = invoice.Items.Sum(e => e.Total_Amount).Round2();
+            invoice.Discount                     = 202.24;
+            invoice.Payment_Amount               = (invoice.Amount_Before_Discount - invoice.Discount).Round2();
+            invoice.VAT_Amount                   = (invoice.Payment_Amount * vatRate / 100.00).Round2();
             invoice.Payment_Amount_Including_VAT = (invoice.Payment_Amount + invoice.VAT_Amount).Round2();
 
             return invoice;

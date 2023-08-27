@@ -18,7 +18,7 @@ namespace TaxesDemo.Controllers
             Globals.Set("redirect_state", state);
             Globals.Set("code", code);
 
-            Response.Redirect("/");
+            Response.Redirect("/?#3");
         }
 
     }

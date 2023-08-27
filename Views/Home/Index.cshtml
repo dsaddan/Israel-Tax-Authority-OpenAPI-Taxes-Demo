@@ -8,7 +8,6 @@
     <h1>OpenAPI Sandbox Invoices Demo</h1>
 </div>
 
-<p>Shaam API URL = @TaxesDemo.Controllers.HomeController.shaam_url</p>
 
 <p>For this example to work properly you must perform the following steps:</p>
 
@@ -16,10 +15,22 @@
 <p>Note: you can use an existing app. Either change the Redirect URI to @TaxesDemo.BL.Globals.Get("redirectUrl") or get an Authorization Code idependently and "Set" it in step 3.</p>
 
 <div> --------------------------------------------------------------------------------------------------------------------------------------------------------</div>
-<p class="bold largeFont">2. Set the key and secret here:</p>
+<a id="2"></a>
+<p class="bold largeFont">2. Set the key, secret, etc. here:</p>
+
+<p>
+    Available keys and secrets:
+    <table class="borders">
+        <tr><th>Env</th><th>Key</th><th>Secret</th><th>Redirect URI</th><th>Shaaam URL</th></tr>
+        <tr><td>Sandbox</td><td>6d2e5958492712a68a9a126377ca9ae0</td><td>79b2f283ba87650e59a202d42ce98aff</td><td>https://localhost:44327/openAPI</td><td>https://openapi.taxes.gov.il/shaam/tsandbox</td></tr>
+        <tr><td>Sandbox</td><td>5c49dc2bbf8ef34151fa40b9b8030a5c</td><td>a3b632650e969a23d6041da689b64b6b</td><td>https://demo.open-api.co.il/OpenAPI</td><td>https://openapi.taxes.gov.il/shaam/tsandbox</td></tr>
+        <tr><td>Production</td><td>==Use your own key==</td><td>==Use your own secret==</td><td>https://demo.open-api.co.il/OpenAPI</td><td>https://openapi.taxes.gov.il/shaam/production</td></tr>
+    </table>
+</p>
 
 @using (Html.BeginForm("SaveKeyAndSecret", "Home", FormMethod.Post))
 {
+    <p>Shaam API URL = @Html.TextBox("shaam_url", TaxesDemo.BL.Globals.Get("shaam_url"), new { style = "width:380px" })</p>
     <p>Application Key (also called client_id) = @Html.TextBox("key", TaxesDemo.BL.Globals.Get("client_id"), new { style = "width:280px" })</p>
     <p>Application Secret (also called client_secret) = @Html.TextBox("secret", TaxesDemo.BL.Globals.Get("client_secret"), new { style = "width:280px" })</p>
     <p>
@@ -28,9 +39,11 @@
     <p>Redirect uri = @Html.TextBox("redirectUrl", TaxesDemo.BL.Globals.Get("redirectUrl"), new { style = "width:380px" })</p>
     <p>State (e.g. invoice number, client id, etc.) = @Html.TextBox("state", TaxesDemo.BL.Globals.Get("state"))</p>
     <p><input id="Submit" type="submit" value="Set Key, Secret and Redirect URI" /></p>
+    <p class="bg1">@TaxesDemo.BL.Globals.Get("SaveKeyAndSecret_response")</p>
 }
 
 <div> --------------------------------------------------------------------------------------------------------------------------------------------------------</div>
+<a id="3"></a>
 <p class="bold largeFont">3. Get an Authorization Code:</p>
 @using (Html.BeginForm("GetAuthorization", "Home", FormMethod.Get))
 {
@@ -49,6 +62,7 @@
     </p>
 }
 
+<p>Url = @TaxesDemo.BL.Globals.Get("GetAuthorization_url")</p>
 <p><span class="bold largeFont">Authorization Code</span> = <span class="bg1">@TaxesDemo.BL.Globals.Get("code")</span></p>
 <p><span class="bold largeFont">State (received from Tax Authority)</span> = <span class="bg1">@TaxesDemo.BL.Globals.Get("redirect_state")</span></p>
 
@@ -65,6 +79,7 @@
 </div>
 
 <div> --------------------------------------------------------------------------------------------------------------------------------------------------------</div>
+<a id="4"></a>
 @using (Html.BeginForm("GetToken", "Home", FormMethod.Get))
 {
     <p class="bold largeFont">4. Get an Access Token</p>
@@ -93,23 +108,27 @@
 <p>Once you received the Token the Authorization Code is invalidated. If you want to test again then you need to get a new Authorization Code. Go back to step 3.</p>
 
 <div> --------------------------------------------------------------------------------------------------------------------------------------------------------</div>
+<a id="5"></a>
 <p class="bold largeFont">5. Get an Invoice Allocation Number (מספר הקצאה):</p>
-
-<p>The invoice details are hard coded:</p>
-<blockquote class="smallFont" style="max-width: 800px; overflow: scroll;">
-    @TaxesDemo.BL.Globals.Get("invoice_details")
-</blockquote>
-
-
 @using (Html.BeginForm("GetInvoiceNumber", "Home", FormMethod.Post))
 {
+    <p>You can edit the Invoice details to test the JSON:</p>
+    @Html.TextArea("invoice_details", TaxesDemo.BL.Globals.Get("invoice_details"), new { style = "width:800px; height: 500px;" })
+
+
     <p><input id="Submit" type="submit" value="Get Invoice Allocation Number" /></p>
 }
+@using (Html.BeginForm("ResetInvoice", "Home", FormMethod.Post))
+{
+    <p><input id="Submit" type="submit" value="Reset Invoice" /></p>
+}
 
+<a id="5.1"></a>
 <p>Invoice Allocation Number Response = </p>
 <div class="box">
     @Html.Raw(TaxesDemo.BL.Globals.Get("inumberResponse"))
 </div>
+<a id="5.2"></a>
 <p><span class="bold largeFont">Invoice Allocation Number</span> = <span class="bg1">@TaxesDemo.BL.Globals.Get("invoice_number")</span></p>
 
 <div> ----------------------------------------------------------------------------------------------------------------</div>

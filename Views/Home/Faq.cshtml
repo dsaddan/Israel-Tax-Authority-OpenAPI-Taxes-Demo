@@ -18,6 +18,20 @@
 </div>
 
 <div class="qa">
+    <p class="q">Where are the Tax Authority Sandbox and Production?</p>
+    <p class="a">
+        Sandbox: <a href="https://openapi-portal.taxes.gov.il/sandbox">https://openapi-portal.taxes.gov.il/sandbox</a><br />
+        End points are at: https://openapi.taxes.gov.il/shaam/tsandbox <br />
+        E.g: https://openapi.taxes.gov.il/shaam/tsandbox/longtimetoken/oauth2/authorize?response_type=code&client_id=b4fdcbc8307386180bd735305a2027ee&scope=scope
+    </p>
+    <p class="a">
+        Production: <a href="https://openapi-portal.taxes.gov.il/shaam/production">https://openapi-portal.taxes.gov.il/shaam/production</a> <br />
+        End points are at: https://openapi.taxes.gov.il/shaam/production <br />
+        E.g: https://openapi.taxes.gov.il/shaam/production/longtimetoken/oauth2/authorize?response_type=code&client_id=9c83a7320fecabd55319a63a82f34d7a&scope=scope
+    </p>
+</div>
+
+<div class="qa">
     <p class="q">What is the flow to get an Allocation Number?</p>
     <p class="a">
         Get Authorization Code 🡆 Get Access Token 🡆 POST the invoice details and receive an Allocation Number.<br /><br />
@@ -133,8 +147,27 @@
 
 <div class="qa">
     <p class="q">How does the Invoice JSON look like?</p>
+    <p class="a">Here is a very simple example:</p>
     <p class="a">
-        Here is an example:<br />
+        <div class="c">
+            {"Invoice_ID":"1",
+            "Invoice_Type": 305,
+            "Vat_Number": 57508855,
+            "Invoice_Date": "2023-08-27",
+            "Invoice_Issuance_Date": "2023-08-27",
+            "Accounting_Software_Number": 207703,
+            "Amount_Before_Discount": 100,
+            "Discount": 0,
+            "Payment_Amount_Including_VAT": 117.00,
+            "Payment_Amount": 117.00,
+            "VAT_Amount": 17.00
+            }
+        </div>
+    </p>
+
+
+    <p class="a">
+        Here is a more elaborate example:<br />
         <div class="c">
             {
             "Invoice_ID":"987654321",
@@ -165,19 +198,19 @@
             "Additional_Information":0,
             "Items":
             [
-            {
-            "Index":7446,
-            "Catalog_ID":"5569875437",
-            "Category":15,
-            "Description": "תיאור הפריט",
-            "Measure_Unit_Description":"קילו",
-            "Quantity":100.5,
-            "Price_Per_Unit":5.50,
-            "Discount": 52.75,
-            "Total_Amount": 500.00,
-            "VAT_Rate": 17.00,
-            "VAT_Amount":85
-            }
+                {
+                    "Index":7446,
+                    "Catalog_ID":"5569875437",
+                    "Category":15,
+                    "Description": "תיאור הפריט",
+                    "Measure_Unit_Description":"קילו",
+                    "Quantity":100.5,
+                    "Price_Per_Unit":5.50,
+                    "Discount": 52.75,
+                    "Total_Amount": 500.00,
+                    "VAT_Rate": 17.00,
+                    "VAT_Amount":85
+                }
             ]
             }
         </div>
@@ -223,7 +256,7 @@
     </p>
     <p class="a">
         You may have used an invalid VAT number.<br />
-        Note that as of today (20-AUG-2023) you can only use the following VAT numbers for the "VAT_NUmber" field:<br />
+        Note that as of today (20-AUG-2023) you can only use the following VAT numbers for the "VAT_Number" field in the Sandbox:<br />
         777777715, 777777723, 777777731, 777777749<br />
     </p>
 </div>
@@ -328,10 +361,23 @@
 
 
 <div class="qa">
-    <p class="q"></p>
+    <p class="q">I am testing my application. I receuve an Authorization Code but when I try to get an Access Token I receive the following error:
+        <code>{"error":"invalid_request","error_description":"Redirect URI specified in the request is not configured in the client subscription"}</code>
+    </p>
     <p class="a">
+        Are you using a redirect URI containing localhost?<br />
+        It looks like you ca not user a redirect URI containing local host in the production portal.
     </p>
 </div>
+
+<div class="qa">
+    <p class="q">The VAT number (מספר עוסק מuרשה) of the vendor starts with 0. How to send it?</p>
+    <p class="a">
+        If you try to send "Vat_Number": 011111115 you will receive an error since numbers starting with 0 are considered to be Octal.<br />
+        Send it as "Vat_Number": 11111115
+    </p>
+</div>
+
 
 <div class="qa">
     <p class="q">Why do I need to grant access to a corporation in the איזור אישי under הרשאות?</p>

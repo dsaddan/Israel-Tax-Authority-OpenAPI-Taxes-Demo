@@ -78,3 +78,13 @@ textarea {
 .shadow {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+
+.borders {
+    border: solid 1px;
+}
+
+.borders th,
+    .borders td {
+        border: solid 3px;
+        padding: 1em;
+    }

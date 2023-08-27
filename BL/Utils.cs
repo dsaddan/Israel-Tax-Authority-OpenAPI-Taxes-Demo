@@ -82,7 +82,7 @@ namespace TaxesDemo.BL
                     using (var reader = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding(charSet)))
                     {
                         string s = reader.ReadToEnd();
-                        Tracer.WriteLine($"{debug}\r\b{s}");
+                        Tracer.WriteLine($"{debug}\r\n==>\r\n{s}");
                         return s;
                     }
                 }
@@ -126,9 +126,15 @@ namespace TaxesDemo.BL
         {
             string requstString = new JavaScriptSerializer().Serialize(postData);
 
-            return HttpPost(url, requstString, "application/json", headers, out debug);
+            return HttpPostJson(url, requstString, out debug, headers);
         }
 
+        public static string HttpPostJson(string url, string postData, out string debug, Dictionary<string, string> headers = null)
+        {
+            string requstString = postData;
+
+            return HttpPost(url, requstString, "application/json", headers, out debug);
+        }
 
         public static string Base64Encode(string plainText)
         {
