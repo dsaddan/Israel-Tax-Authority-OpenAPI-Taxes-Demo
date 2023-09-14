@@ -13,3 +13,19 @@
 <p>
     Once you have the Authorization Code copy it to My Desktop Application and close the browser.<br />
 </p>
+
+<hr />
+
+<p style="line-height: 2em;">
+    The idea is this:<br />
+    (1)	The user gets the Authorization Code via a browser using this page.<br />
+    (2)	The user copies the Auth Code into the desktop application.<br />
+    (3)	The application performs the API calls to get the Token.<br />
+    This means that you need to add the ability to perform Http communication into the application and parse the response.<br />
+    If this is not feasible then the whole process will have to be implemented outside of the desktop application.<br />    
+    (4)	The application stores the Token and the Refresh Token.<br />
+    (5)	The application uses the Token to get an Allocation Number.<br />
+    (6)	The application uses the Refresh Token to get a new Token and new Refresh Token. Goto step 4.<br />
+    (7)	Once the Refresh Token expires display a relevant message to the user and goto step 1.<br />
+</p>
+
