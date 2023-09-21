@@ -16,11 +16,11 @@ namespace TaxesDemo.Controllers
         //The key and secret are only valid if you run the demo under localhost:44327
         //If you run it under anothe port (say 34567) then you need to create an APP in the Sandbox portal and
         //set the Redirect URI of said App to https://localhost:34567
-        const string client_id_localhost_44327 = "6d2e5958492712a68a9a126377ca9ae0";
+        const string client_id_localhost_44327     = "6d2e5958492712a68a9a126377ca9ae0";
         const string client_secret_localhost_44327 = "79b2f283ba87650e59a202d42ce98aff";
 
-        const string client_id = "5c49dc2bbf8ef34151fa40b9b8030a5c";
-        const string client_secret = "a3b632650e969a23d6041da689b64b6b";
+        const string client_id                     = "5c49dc2bbf8ef34151fa40b9b8030a5c";
+        const string client_secret                 = "a3b632650e969a23d6041da689b64b6b";
 
         public HomeController()
         {
@@ -72,7 +72,12 @@ namespace TaxesDemo.Controllers
             return View();
         }
 
-        public ActionResult Register()
+        public ActionResult DevRegister()
+        {
+            return View();
+        }
+
+        public ActionResult UserRegister()
         {
             return View();
         }

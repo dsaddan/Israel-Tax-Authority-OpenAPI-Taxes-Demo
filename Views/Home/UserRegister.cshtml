@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewBag.Title = "About";
+}
+
+<h2>How do I register users?</h2>
+
+<p>
+    By users we mean the users of your application. The people that you need to fetch an Allocation Number for.
+</p>
+<p>
+    There are TWO types of users:<br />
+    1. Single-owner business ("עוסק מורשה") .<br />
+    2. Corporate business ("תאגיד", "חברה בע"מ").
+</p>
+
+<p>
+    Users need to give permission to your application to fetch Allocation Numbers for them.<br />
+    Your application is recognized by the Tax Authorty by the registration that you created in the Production site<br />
+    as described in <a href="/Home/DevRegister" target="_blank">Dev Registration</a>.<br />
+    This means that it is either recognized under your own Osek Morshe or your company's ID ("ח.פ.").<br />
+</p>
+
+<h3>
+    Single Business Users ("עוסק מורשה")
+</h3>
+
+<p>
+    The user needs to log into his <a href="https://secapp.taxes.gov.il/srsherutatzmi" target="_blank">Personal Area ("איזור אישי")</a> in the Tax Authority system.<br />
+    <span class="bold">Note that this is NOT the <a href="https://my.gov.il/landing/" target="_blank">איזור אישי in the Israel's Governomnet system ("איזור אישי ממשלתי")</a></span>.
+    The user then needs to go into הרשאה לפעולות דיגיטליות:<br />
+    <img src="~/Content/images/20230920_103859.png" class="shadow" style="width:60em;"/><br />
+</p>
+
+<h3>
+    Corporate business ("תאגיד", "חברה בע"מ")
+</h3>
+
+<p>
+    An officer of the company (דירקטור) needs to log into his איזור אישי.<br />
+    I do not know how the Tax Authority relates people and coroporations. I guess it is done via רשם החברות.<br />
+    If this is so then it means that only a person who is registerd as an officer of corporation in רשם החברות can give the permissions.
+</p>
+<p>
+    When an officer logs into his איזור אישי and opens הרשאה לפעולות דיגיטליות he will see two types of Permissions:<br />
+    1. Personal Permissions<br />
+    2. Coroporate Permissions<br />
+</p>
+<p>
+    <img src="~/Content/images/20230920_105107.png" class="shadow" style="width:60em;" /><br />
+</p>
+<p>
+    Now, in order to be able to give permissions for the corporate the user need to perform <a href="https://secapp.taxes.gov.il/srRishum/main/imutComunity/yeshut" target="_blank">רישום פרטי תאגיד.</a><br />
+    Note that in order to complete this registartion the user will need to provide information regarding תשלומי מעמ or תשלומי מקדמות מס.<br />
+    So the user need to be able to look up the data in or ask his accountant beforehand.<br />
+</p>
+<p>
+    <img src="~/Content/images/20230920_105629.png" class="shadow" style="width:60em;" /><br />
+</p>
+
+<p>
+    After completing the רישום פרטי תאגיד the user will be able to go into his הרשאה לפעולות דיגיטליות, select his corporation and grant you <br />
+    a permission to the חשבוניות ישראל module.<br />
+    He needs to click on הוספת הרשאה and then type in YOUR (the developer's) registration number (either עוסק מורשה or ח.פ. depending on how you registered to the Production system):
+</p>
+<p>
+    <img src="~/Content/images/20230920_111255.png" class="shadow" style="width:60em;" /><br />
+</p>
+<p>
+    Step 2 - The user needs to select module חשבוניות ישראל<br />
+    Step 3 - The user needs to select the Permission's end time:
+</p>
+<p>
+    <img src="~/Content/images/20230920_102802.png" class="shadow" style="width:60em;" /><br />
+</p>
+
+<p>
+    Once the user completes the process a new Permission request will be displayed. Its status is Pending Approval.
+</p>
+
+<p>
+    <img src="~/Content/images/20230920_110625.png" class="shadow" style="width:60em;" /><br />
+</p>
+
+<p>
+    Now, YOU need to go into YOUR איזור אישי and approve the request. It will be displayed under הרשאות שנתנו לי.
+</p>
+
+<p>
+    Approve the request. <br />
+    The user will see that the Permissions Request's status was changed to Active (green color):
+</p>
+
+<p>
+    <img src="~/Content/images/20230920_111737.png" class="shadow" style="width:60em;" /><br />
+</p>
+
+<p>
+    This compltes the business process. You application can now fetch Allocation Numbers for this user.
+</p>
+

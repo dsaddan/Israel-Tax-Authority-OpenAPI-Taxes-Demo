@@ -150,6 +150,13 @@
     <Content Include="Content\images\20230817_114645.png" />
     <Content Include="Content\images\20230817_114810.png" />
     <Content Include="Content\images\20230822_113958.png" />
+    <Content Include="Content\images\20230920_102802.png" />
+    <Content Include="Content\images\20230920_103859.png" />
+    <Content Include="Content\images\20230920_105107.png" />
+    <Content Include="Content\images\20230920_105629.png" />
+    <Content Include="Content\images\20230920_110625.png" />
+    <Content Include="Content\images\20230920_111255.png" />
+    <Content Include="Content\images\20230920_111737.png" />
     <Content Include="Content\invoice_schema.txt" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -159,6 +166,8 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="README.md" />
     <Content Include="Content\Documents\vat11092023.pdf" />
+    <Content Include="Content\Documents\IncomeTax_software-houses-100923.pdf" />
+    <Content Include="Content\Documents\IncomeTax_software-houses-050623.pdf" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -181,7 +190,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Register.cshtml" />
+    <Content Include="Views\Home\DevRegister.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\OpenAPI\Index.cshtml" />
     <Content Include="Views\Home\OneStep.cshtml" />
@@ -190,6 +199,7 @@
     <Content Include="Views\Home\Documentation.cshtml" />
     <Content Include="Views\Desktop\Index.cshtml" />
     <Content Include="Views\Desktop\Callback.cshtml" />
+    <Content Include="Views\Home\UserRegister.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
