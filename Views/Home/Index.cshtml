@@ -12,7 +12,7 @@
 
 <p>For this example to work properly you must perform the following steps:</p>
 
-<p class="bold largeFont">1. <a href="/Home/Register">Complete the Registration process and create an App in the "Sandbox".</a></p>
+<p class="bold largeFont">1. <a href="/Home/DevRegister">Complete the Registration to the Sandbox process and create an App there.</a></p>
 <p>Note: you can use an existing app. Either change the Redirect URI to @TaxesDemo.BL.Globals.Get("redirectUrl") or get an Authorization Code idependently and "Set" it in step 3.</p>
 
 <div> --------------------------------------------------------------------------------------------------------------------------------------------------------</div>
@@ -25,7 +25,7 @@
         <tr><th>Env סביבה</th>                  <th>Key מפתח</th>                               <th>Secret סוד</th>                        <th>Redirect URI</th>                           <th>Shaaam URL פורטל</th></tr>
         <tr><td>Sandbox localhost:44327</td>    <td>6d2e5958492712a68a9a126377ca9ae0</td>       <td>79b2f283ba87650e59a202d42ce98aff</td>   <td>https://localhost:44327/openAPI</td>        <td>https://openapi.taxes.gov.il/shaam/tsandbox</td></tr>
         <tr><td>Sandbox</td>                    <td>5c49dc2bbf8ef34151fa40b9b8030a5c</td>       <td>a3b632650e969a23d6041da689b64b6b</td>   <td>https://demo.open-api.co.il/OpenAPI</td>    <td>https://openapi.taxes.gov.il/shaam/tsandbox</td></tr>
-        <tr><td>Production</td>                 <td>==Use your own key==</td>                   <td>==Use your own secret==</td>            <td>https://demo.open-api.co.il/OpenAPI</td>    <td>https://openapi.taxes.gov.il/shaam/production</td></tr>
+        <tr><td>Production</td>                 <td>9c83a7320fecabd55319a63a82f34d7a</td>       <td>bb7cb994ab692d1e9fd15157c227e7f8</td>   <td>https://demo.open-api.co.il/OpenAPI</td>    <td>https://openapi.taxes.gov.il/shaam/production</td></tr>
     </table>
 </p>
 
@@ -132,7 +132,7 @@
 
 <a id="5.1"></a>
 <p>Invoice Allocation Number Response = </p>
-<div class="box" style="max-height: 300px; overflow:scroll;">
+<div class="box" style="max-height: 600px; overflow:scroll;">
     @Html.Raw(TaxesDemo.BL.Globals.Get("inumberResponse"))
 </div>
 <a id="5.2"></a>
@@ -165,6 +165,7 @@
 
 @using (Html.BeginForm("RefreshToken", "Home", FormMethod.Post))
 {
+    <p> @Html.TextBox("refreshToken", TaxesDemo.BL.Globals.Get("refresh_token"), new { style = "width: 900px;" })</p>
     <p><input id="Submit" type="submit" value="Refresh the Access Token" /></p>
 }
 

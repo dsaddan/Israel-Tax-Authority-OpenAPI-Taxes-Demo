@@ -200,6 +200,7 @@
     <Content Include="Views\Desktop\Index.cshtml" />
     <Content Include="Views\Desktop\Callback.cshtml" />
     <Content Include="Views\Home\UserRegister.cshtml" />
+    <Content Include="Views\Home\UserRegister - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

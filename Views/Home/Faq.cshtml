@@ -245,7 +245,7 @@
 
 <div class="qa">
     <p class="q">
-        When I try to get an Allocation Number I receive this error:
+        When I try to get an Allocation Number I receive this error:<br />
         <code>
             {
             "Status": 500,
@@ -255,9 +255,26 @@
         </code>
     </p>
     <p class="a">
+        If you are testing against the Sandbox:<br />
         You may have used an invalid VAT number.<br />
         Note that as of today (20-AUG-2023) you can only use the following VAT numbers for the "VAT_Number" field in the Sandbox:<br />
         777777715, 777777723, 777777731, 777777749<br />
+        <br />
+        If you get the error when working with the Production system there is no way for you to know :-(<br />
+        Send an e-mail with the error to invoices@taxes.gov.il and hopefully someone there will help you.
+    </p>
+</div>
+
+<div class="qa">
+    <p class="q">
+        When I try to get an Allocation Number I receive this error:<br />
+        <code>
+            {"Status":406,"Message":"Not Acceptable","Error_Id":"83189028997"}
+        </code>
+    </p>
+    <p class="a">
+        You are not allowed to get an Allocation Number for the "Vat_Number" you sent.<br />
+        Either you sent the wrong "Vat_Number" or the owner of this "Vat_Number" did not grant you the authrization in איזור אישי.
     </p>
 </div>
 
@@ -378,11 +395,20 @@
     </p>
 </div>
 
+<div class="qa">
+    <p class="q">
+        Do I need to register my users in the Tax Authority?
+    </p>
+    <p class="a">
+        No there is no such need. Everyone can use your application to get an Authorization NUmber.
+    </p>
+</div>
 
 <div class="qa">
-    <p class="q">Why do I need to grant access to a corporation in the איזור אישי under הרשאות?</p>
+    <p class="q">What are הרשאות  in  איזור אישי?</p>
     <p class="a">
-        I do not know. I suppose that it is a way to allow כספית to allocate numbers for a given user (?).
+        The הרשאות  in  איזור אישי are there to allow one user to allow another user to get Allocation Number in his heahlf.<br />
+        A typical example is a business owner who wants to allow one or more of his employees to issue invoices in his behalf.
     </p>
 </div>
 

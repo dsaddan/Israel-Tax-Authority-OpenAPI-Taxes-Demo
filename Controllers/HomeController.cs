@@ -188,11 +188,12 @@ namespace TaxesDemo.Controllers
             Response.Redirect("/?#4");
         }
 
-        public void RefreshToken()
+        public void RefreshToken(string refreshToken)
         {
 
             Globals.Set("access_token", null);
             Globals.Set("access_token_expire_at", null);
+            Globals.Set("refresh_token", refreshToken);
             Globals.Set("refresh_token_expire_at", null);
             Globals.Set("TokenResponse", null);
 
@@ -224,7 +225,6 @@ namespace TaxesDemo.Controllers
             Response.Redirect("/?#6");
         }
 
-
         private void ProcessTokenResponse(string tokenResponse)
         {
             /*
@@ -253,6 +253,7 @@ namespace TaxesDemo.Controllers
                 Globals.Set("refresh_token_expire_at", Utils.UnixTimeStampToDateTime(tr.consented_on.Value + tr.refresh_token_expires_in.Value).ToString("yyyy-MM-dd HH:mm"));
             }
         }
+
 
         public void GetInvoiceNumber(string invoice_details)
         {
