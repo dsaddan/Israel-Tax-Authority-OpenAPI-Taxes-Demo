@@ -3,6 +3,65 @@
     ViewBag.Title = "תיעוד - מודול חשבוניות לישראל";
 }
 
+<h2>תימצות של התהליך</h2>
+
+<div style="direction:rtl;text-align:right">
+    <p>
+        התהליך הוא זה:
+    </p>
+
+    <p>
+        התוכנה שלך מפנה את הדפדפן לקישור הבא:
+        https://openapi.taxes.gov.il/shaam/production/longtimetoken/oauth2/authorize?response_type=code&client_id=9c83a7320fecabd55319a63a82f34d7a&scope=scope&state=7778809
+    </p>
+
+    <p>
+        המערכת של רשות המיסים פותתת חלון הזדהות.
+    </p>
+
+    <p>
+        המשתמש מזדהה מול המערכת של רשות המיסים.
+    </p>
+
+    <p>
+        המערכת של רשות המיסים שולחת Redirect לכתובת שהגדרת מראש ושולחת לך את ה-AUthorization Code  ואת ה-State
+    </p>
+
+    <p>
+        המערכת שלך משתמשת ב-AUthorization Code ומקבלת Access Token.<br />
+        בנוסף המערכת מקבלת גם Refresh Token.
+    </p>
+
+    <p>
+        המערכת שלך משתמשת ב-Access Token  ומקבלת Allocation Number.
+    </p>
+
+    <p>
+        בפעם הבאה אתה יכול לעבור שוב דרך המסלול הנ"ל.<br />
+        או, אם שמרת את ה-Refresh Token, להשתמש בו בכדי לקבל  Access Token חדש.<br />
+        זה חוסך למשתמש את ההזדהות מול רשות המיסים.<br />
+    </p>
+
+</div>
+
+<h2>קודי שגיאה של קבלת מספר הקצאה</h2>
+
+<style>
+    #errCodes td {
+        border: 1px solid;
+        padding: 1em;
+    }
+</style>
+<table id="errCodes" style="border-collapse:collapse;margin-left:51.25pt" cellspacing="0">
+    <tr style=""><td style=""><p class="s45" style="padding-top: 10pt;padding-left: 5pt;padding-right: 10pt;text-indent: 0pt;line-height: 16pt;text-align: left;">Http code</p></td><td style=""><p class="s45" style="">Http Message</p></td><td style=""><p class="s45" style="">More Information</p></td><td style=""><p class="s45" style="">Help</p></td></tr>
+    <tr style=""><td style=""><p class="s18" style="">400</p></td><td style=""><p style="">Bad Request</p></td><td style=""><p class="s18" style="">object syntax Invalid</p></td><td style=""><p class="s18" style="padding-top: 11pt;padding-left: 5pt;text-indent: 0pt;line-height: 16pt;text-align: left;">Check client side Json for syntax errors</p></td></tr>
+    <tr style=""><td style=""><p class="s18" style="">401</p></td><td style=""><p style="">Unauthorized</p></td><td style=""><p class="s18" style="">Cannot pass the security checks that are required by the target API or operation, Enable debug headers for</p><p class="s18" style="padding-left: 5pt;text-indent: 0pt;line-height: 15pt;text-align: left;">more details</p></td><td style=""><p class="s18" style="padding-top: 11pt;padding-left: 5pt;padding-right: 8pt;text-indent: 0pt;text-align: justify;">Make sure OAuth2 protocol is set and that the Token is up to date</p></td></tr>
+    <tr style=""><td style=""><p class="s18" style="">403</p></td><td style=""><p style="">Forbidden</p></td><td style=""><p class="s18" style="padding-top: 10pt;padding-left: 5pt;padding-right: 5pt;text-indent: 0pt;line-height: 16pt;text-align: left;">You don&#39;t have permission to access this service</p></td><td style="direction:rtl; text-align: right;"><p class="s18" >דוגמה: שלחת Client ID של App שלא קיים במערכת של רשות המיסים.</p><p>או שה-APP לא subscribed על השירות</p></td></tr>
+    <tr style=""><td style=""><p class="s18" style="">404</p></td><td style=""><p style="">Not Found</p></td><td style=""><p class="s18" style="padding-top: 11pt;padding-left: 5pt;text-indent: 0pt;line-height: 16pt;text-align: left;">No resources match requested URI</p></td><td style=""><p class="s18" style="">Check URI is correct</p></td></tr>
+    <tr style=""><td style=""><p class="s18" style="">406</p></td><td style=""><p style="">Not Acceptable</p></td><td style=""><p class="s18" style="">Server cannot fulfill request</p></td><td style=""><p class="s18" style="padding-top: 10pt;padding-left: 5pt;text-indent: 0pt;line-height: 16pt;text-align: left;">Check permission for the Vat_numebr<br />למשתמש שהזדהה מול רשות המיסים אין הרשאה לקבל מספר הקצאה עבור ה-Vat_number שנשלח ב-JSON</p></td></tr>
+    <tr style=""><td style=""><p class="s18" style="">422</p></td><td style=""><p style="">Unprocessable Entity</p></td><td style=""><p class="s18" style="">Validate: temporary:///swagger/shaa m_tsandbox_invoices_v1.js</p></td><td style=""><p class="s18" style="padding-top: 11pt;padding-left: 5pt;padding-right: 7pt;text-indent: 0pt;text-align: left;">One or more of the parameters don’t match the schema. Check the JSON in swagger for specific</p><p class="s18" style="padding-left: 5pt;text-indent: 0pt;line-height: 15pt;text-align: left;">error.</p></td></tr>
+    <tr style=""><td style=""><p class="s18" style="">500</p></td><td style=""><p style="">Internal Server Error</p></td><td style=""><p class="s18" style="">Error_Id</p></td><td style=""><p class="s18" style="padding-top: 11pt;padding-left: 5pt;text-indent: 0pt;line-height: 16pt;text-align: left;">באג בצד של רשות המיסים. לדוגמה: שלחת ערך בפורמט שהם לא ציפו לו, החסרת שדה שהוא לא שדה חובה אבל הקוד שלהם כן מצפה לו. פנה אליהם שיעזרו לך.</p></td></tr></table>
+
 <h2>Links And Documentation</h2>
 
 <h2>תיעוד - מודול חשבוניות לישראל</h2>
