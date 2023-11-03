@@ -55,6 +55,20 @@
 </div>
 
 
+
+<div class="qa">
+    <p class="q">
+        When I try to get an Authorization Code I receive this error:<br />
+        <code>
+            {"error":"invalid_request","error_description":"Redirect URI missing"}
+        </code>
+    </p>
+    <p class="a">
+        Verify that you defined only ONE redirect URI for the app. Technically you can define more than<br />
+        onr redirect uri. But if you do, you will get this error.
+    </p>
+</div>
+
 <div class="qa">
     <p class="q">
         How can I identify the invoice or the client id that requested the Authorization Code?
@@ -198,19 +212,19 @@
             "Additional_Information":0,
             "Items":
             [
-                {
-                    "Index":7446,
-                    "Catalog_ID":"5569875437",
-                    "Category":15,
-                    "Description": "תיאור הפריט",
-                    "Measure_Unit_Description":"קילו",
-                    "Quantity":100.5,
-                    "Price_Per_Unit":5.50,
-                    "Discount": 52.75,
-                    "Total_Amount": 500.00,
-                    "VAT_Rate": 17.00,
-                    "VAT_Amount":85
-                }
+            {
+            "Index":7446,
+            "Catalog_ID":"5569875437",
+            "Category":15,
+            "Description": "תיאור הפריט",
+            "Measure_Unit_Description":"קילו",
+            "Quantity":100.5,
+            "Price_Per_Unit":5.50,
+            "Discount": 52.75,
+            "Total_Amount": 500.00,
+            "VAT_Rate": 17.00,
+            "VAT_Amount":85
+            }
             ]
             }
         </div>
@@ -277,6 +291,7 @@
         Either you sent the wrong "Vat_Number" or the owner of this "Vat_Number" did not grant you the authrization in איזור אישי.
     </p>
 </div>
+
 
 <div class="qa">
     <p class="q">How does an Allocation Number response look like?</p>
@@ -378,7 +393,8 @@
 
 
 <div class="qa">
-    <p class="q">I am testing my application. I receuve an Authorization Code but when I try to get an Access Token I receive the following error:
+    <p class="q">
+        I am testing my application. I receuve an Authorization Code but when I try to get an Access Token I receive the following error:
         <code>{"error":"invalid_request","error_description":"Redirect URI specified in the request is not configured in the client subscription"}</code>
     </p>
     <p class="a">
@@ -400,7 +416,7 @@
         Do I need to register my users in the Tax Authority?
     </p>
     <p class="a">
-        No there is no such need. Everyone can use your application to get an Authorization NUmber.
+        No there is no such need. Everyone can use your application to get an Authorization Number.
     </p>
 </div>
 

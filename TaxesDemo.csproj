@@ -168,6 +168,7 @@
     <Content Include="Content\Documents\vat11092023.pdf" />
     <Content Include="Content\Documents\IncomeTax_software-houses-100923.pdf" />
     <Content Include="Content\Documents\IncomeTax_software-houses-050623.pdf" />
+    <Content Include="Content\Documents\הזדהות ורישום לפורטל מפתחים.pptx" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

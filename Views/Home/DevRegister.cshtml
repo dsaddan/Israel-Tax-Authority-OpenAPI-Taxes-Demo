@@ -45,6 +45,8 @@
     Set the redirect URL to <span style="font-size: 120%">@Request.Url.Scheme://@Request.Url.Authority/OpenAPI</span><br />
     The redirect url is used at the Get Authorization Token step (demoed later). <br />
     The redirect url can be localhost since the redirect is done in the client (i.e browser).<br />
+    <strong>Important!</strong> Register only ONE redirect url per one app. Technically you can add two or more redirect url's. However if<br />
+    you register more than one you will get an error when you will try to use the app.
     <img class="shadow" src="~/Content/images/20230817_111357.png" /> <br /><br />
 </p>
 
