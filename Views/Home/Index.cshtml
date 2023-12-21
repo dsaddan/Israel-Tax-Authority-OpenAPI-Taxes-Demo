@@ -31,7 +31,8 @@
 
 @using (Html.BeginForm("SaveKeyAndSecret", "Home", FormMethod.Post))
 {
-    <p>* Shaam API URL = @Html.TextBox("shaam_url", TaxesDemo.BL.Globals.Get("shaam_url"), new { style = "width:380px" })</p>
+    <p>* Shaam API URL = @Html.TextBox("shaam_url", TaxesDemo.BL.Globals.Get("shaam_url"), new { style = "width:380px" }) <span style="font-style:italic">URL used to get Authorization Code and Access Tokens</span></p>
+    <p>* ITA API URL = @Html.TextBox("shaam_ita_url", TaxesDemo.BL.Globals.Get("shaam_ita_url"), new { style = "width:380px" }) <span style="font-style:italic">URL used to get Allocation Number</span></p>
     <p>* Application Key (also called client_id) = @Html.TextBox("key", TaxesDemo.BL.Globals.Get("client_id"), new { style = "width:280px" })</p>
     <p>* Application Secret (also called client_secret) = @Html.TextBox("secret", TaxesDemo.BL.Globals.Get("client_secret"), new { style = "width:280px" })</p>
     <p>

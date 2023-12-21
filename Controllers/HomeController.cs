@@ -12,6 +12,7 @@ namespace TaxesDemo.Controllers
     public class HomeController : Controller
     {
         private string _shaam_url = "https://openapi.taxes.gov.il/shaam/tsandbox";
+        private string _shaam_ita_url = "https://ita-api.taxes.gov.il/shaam/tsandbox";
 
         //The key and secret are only valid if you run the demo under localhost:44327
         //If you run it under anothe port (say 34567) then you need to create an APP in the Sandbox portal and
@@ -28,6 +29,7 @@ namespace TaxesDemo.Controllers
         public ActionResult Index()
         {
             if (string.IsNullOrEmpty(Globals.Get("shaam_url")))       { Globals.Set("shaam_url", _shaam_url); }
+            if (string.IsNullOrEmpty(Globals.Get("shaam_ita_url")))   { Globals.Set("shaam_ita_url", _shaam_ita_url); }
             if (string.IsNullOrEmpty(Globals.Get("redirectUrl")))     {Globals.Set("redirectUrl", $"{Request.Url.Scheme}://{Request.Url.Authority}/OpenAPI"); }
             if (string.IsNullOrEmpty(Globals.Get("client_id")))
             {
@@ -98,9 +100,10 @@ namespace TaxesDemo.Controllers
         }
         
 
-        public void SaveKeyAndSecret(string shaam_url, string key, string secret, string redirectUrl, string state)
+        public void SaveKeyAndSecret(string shaam_url, string shaam_ita_url, string key, string secret, string redirectUrl, string state)
         {
             Globals.Set("shaam_url", shaam_url);
+            Globals.Set("shaam_ita_url", shaam_ita_url);
             Globals.Set("client_id", key);
             Globals.Set("client_secret", secret);
             Globals.Set("redirectUrl", redirectUrl);
@@ -260,7 +263,7 @@ namespace TaxesDemo.Controllers
             Globals.Set("invoice_details", invoice_details);
 
             Dictionary<string, string> headers = new Dictionary<string, string>();
-            string url = $"{Globals.Get("shaam_url")}/Invoices/v1/Approval";
+            string url = $"{Globals.Get("shaam_ita_url")}/Invoices/v1/Approval";
 
             headers.Add("Authorization", $"Bearer {Globals.Get("access_token")}");
 
